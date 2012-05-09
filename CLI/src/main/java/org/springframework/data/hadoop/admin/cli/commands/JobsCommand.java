@@ -28,9 +28,9 @@ import org.springframework.util.MultiValueMap;
  */
 @Component
 public class JobsCommand extends BaseCommand implements CommandMarker {
-	
+
 	private static int count = 0;
-	
+
 	/**
 	 * list all jobs
 	 */
@@ -39,7 +39,7 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 		super.setCommandURL("jobs.json");
 		super.callGetService();
 	}
-	
+
 	/**
 	 * list job by name
 	 * 
@@ -53,20 +53,26 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 		super.setCommandURL(url);
 		super.callGetService();
 	}
-	
+
 	/**
 	 * launch job 
 	 * 
 	 * @param jobName
 	 */
 	@CliCommand(value = "launch-job", help = "execute job")
-	public void executeJob(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName) {
+	public void executeJob(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
+			@CliOption(key = { "jobParameters" }, mandatory = false, help = "Job Parameters") final String jobParameters) {
 		String url = "jobs/";
 		url += jobName;
 		url += ".json";
 		super.setCommandURL(url);
 		MultiValueMap<String, String> mvm = new LinkedMultiValueMap<String, String>();
-		mvm.add("jobParameters", "fail=false, id=" + count++);
+		if (jobParameters == null) {
+			mvm.add("jobParameters", "fail=false, id=" + count++);
+		}
+		else {
+			mvm.add("jobParameters", jobParameters);
+		}
 		super.callPostService(mvm);
 	}
 

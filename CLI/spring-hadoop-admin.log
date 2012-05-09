@@ -98,3 +98,34 @@ launch-job --jobName wordcount-withscript-job
 launch-job --jobName wordcount-withscript-job
 quit
 // Spring Roo UNKNOWN VERSION log closed at 2012-05-09 13:03:31
+// Spring Roo UNKNOWN VERSION log opened at 2012-05-09 14:55:55
+target --url http://localhost:8081/spring-hadoop-admin
+info
+jobs-all
+launch-job --jobName wordcount-withscript-job
+jobs-by-name --jobName wordcount-withscript-job
+executions-all
+jobs-by-name --jobName wordcount-withscript-job
+executions-all
+executions-all
+jobs-by-name --jobName wordcount-withscript-job
+quit
+// Spring Roo UNKNOWN VERSION log closed at 2012-05-09 15:02:12
+// Spring Roo UNKNOWN VERSION log opened at 2012-05-09 15:02:22
+quit
+// Spring Roo UNKNOWN VERSION log closed at 2012-05-09 15:03:16
+// Spring Roo UNKNOWN VERSION log opened at 2012-05-09 15:03:25
+quit
+// Spring Roo UNKNOWN VERSION log closed at 2012-05-09 15:03:30
+// Spring Roo UNKNOWN VERSION log opened at 2012-05-09 15:03:38
+launch-job --jobName wordcount-withscript-job --jobParameters "fail=false, id=2"
+executions-all
+launch-job --jobName wordcount-withscript-job --jobParameters "fail=false, id=3"
+executions-all
+execution-by-id --jobExecutionId 0
+execution-by-id --jobExecutionId 1
+execution-stop-by-id --jobExecutionId 3
+executions-stop-all
+executions-all
+quit
+// Spring Roo UNKNOWN VERSION log closed at 2012-05-09 15:18:36

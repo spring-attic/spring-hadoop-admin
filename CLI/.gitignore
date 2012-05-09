@@ -12,5 +12,7 @@ bin
 build
 target
 .springBeans
+spring-hadoop-admin.log
+spring-hadoop-admin.properties
 
 

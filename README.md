@@ -2,19 +2,19 @@ spring-hadoop-admin
 ===================
 
 admin application for spring hadoop.
+
 1. checkout the code
-$git checkout git@github.com:leejianwei/spring-hadoop-admin.git
+
+$ git checkout git@github.com:SpringSource/spring-hadoop-admin.git
 
 2. build & run
 
-$./gradlew jettyRun
+$ ./gradlew jettyRun
 
 3. Upload spring hadoop example
 
 3a.In the browser, open "http://localhost:8081/spring-hadoop-admin"
-
 3b.Click "File" menu
-
 3c.In the "Server Path" textfield, input "hadoopjob/job1"
 3d.Click "Browse..." button, and nagivate to "spring-hadoop-admin/samples/wordcount-batch" folder,
 3e.Select "hadoop-examples-1.0.0.jar
