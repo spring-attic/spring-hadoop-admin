@@ -38,4 +38,13 @@ public class TargetCommand implements CommandMarker {
 			Log.error("set target url failed. " + e.getMessage());
 		}
 	}
+	
+	@CliCommand(value = "fs.default.name", help = "set HDFS URL")
+	public void dfsName(@CliOption(key = { "url" }, mandatory = true, help = "HDFS URL") final String url) {
+		try {
+			PropertyUtil.setDfsName(url);
+		} catch (ConfigurationException e) {
+			Log.error("set target url failed. " + e.getMessage());
+		}
+	}
 }

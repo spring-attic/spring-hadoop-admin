@@ -33,7 +33,9 @@ public class InfoCommand implements CommandMarker {
 	public void getCLIInfo() {
 		try {
 			String serviceUrl = PropertyUtil.getTargetURl();
-			Log.show("    service url:    " + serviceUrl);
+			Log.show("    service url:    " + serviceUrl);			
+			String dfsName = PropertyUtil.getDfsName();
+			Log.show("    fs default name:    " + dfsName);
 		} catch (ConfigurationException e) {
 			Log.error("set target url failed. " + e.getMessage());
 		}

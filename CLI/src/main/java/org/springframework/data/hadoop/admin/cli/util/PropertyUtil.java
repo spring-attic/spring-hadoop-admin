@@ -44,16 +44,53 @@ public class PropertyUtil {
 		}
 	}
 
+	/**
+	 * set Spring Hadoop Admin service URL
+	 * 
+	 * @param targetUrl service URL
+	 * @throws ConfigurationException
+	 */
 	public static void setTargetUrl(String targetUrl) throws ConfigurationException {
 		PropertiesConfiguration config = new PropertiesConfiguration(adminPropertyFileName);
 		config.setProperty("targetUrl", targetUrl);
 		config.save();
 	}
 
+	/**
+	 * get Spring Hadoop Admin service URL
+	 * @return service URL
+	 * @throws ConfigurationException
+	 */
 	public static String getTargetURl() throws ConfigurationException {
 		String result = null;
 		PropertiesConfiguration config = new PropertiesConfiguration(adminPropertyFileName);
 		result = config.getString("targetUrl");
 		return result;
 	}
+	
+	/**
+	 * set HDFS URL
+	 * 
+	 * @param dfsName HDFS URL
+	 * 
+	 * @throws ConfigurationException
+	 */
+	public static void setDfsName(String dfsName) throws ConfigurationException {
+		PropertiesConfiguration config = new PropertiesConfiguration(adminPropertyFileName);
+		config.setProperty("dfs.default.name", dfsName);
+		config.save();
+	}
+
+	/**
+	 * get HDFS URL
+	 * @return HDFS URL
+	 * @throws ConfigurationException
+	 */
+	public static String getDfsName() throws ConfigurationException {
+		String result = null;
+		PropertiesConfiguration config = new PropertiesConfiguration(adminPropertyFileName);
+		result = config.getString("dfs.default.name");
+		return result;
+	}
+	
 }

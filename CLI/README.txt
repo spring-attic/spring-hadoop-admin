@@ -23,6 +23,18 @@ springHadoopAdmin>launch-job --jobName {jobName}
 
 
 
+to run Dfs shell:
+
+1. run
+$ java -jar target/admin-cli-1.0.0.BUILD-SNAPSHOT.jar
+
+2. set HDFS URL
+springHadoopAdmin>fs.default.name --url hdfs://localhost:9000
+springHadoopAdmin>info
+
+3. run commands:
+springHadoopAdmin>dfs --ls
+
 eclipse:
 mvn eclipse:eclipse
 File -> Import... -> Existing Project ...

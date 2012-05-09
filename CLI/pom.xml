@@ -52,6 +52,11 @@
 			<artifactId>spring-batch-admin-resources</artifactId>
 			<version>1.2.1.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-core</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
