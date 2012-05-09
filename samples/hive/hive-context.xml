@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:hdp="http://www.springframework.org/schema/hadoop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+      	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      	http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">
+
+	<context:property-placeholder location="hadoop.properties" />
+
+	<hdp:configuration>
+		fs.default.name=${hd.fs}
+		mapred.job.tracker=${mapred.job.tracker}
+	</hdp:configuration>
+
+
+	<hdp:hive-client host="localhost" port="10000">
+	</hdp:hive-client>
+
+
+	<job id="hiveJob" xmlns="http://www.springframework.org/schema/batch">
+		<step id="prepareData" next="initTable">
+			<tasklet ref="prepareDataTasklet" />
+		</step>
+		<step id="initTable" next="loadData">
+			<tasklet ref="initTableTasklet" />
+		</step>
+		<step id="loadData" next="showData">
+			<tasklet ref="loadDataScriptTasklet" />
+		</step>
+		<step id="showData">
+			<tasklet ref="showDataTasklet" />
+		</step>
+	</job>
+	
+	<hdp:script-tasklet id="prepareDataTasklet">
+		<hdp:script language="groovy">
+		<![CDATA[			
+			if (fsh.test("u.data")) {
+		  		fsh.rmr("u.data")
+			}
+			inStream = cl.getResourceAsStream("ml-100k/u.data")
+			org.apache.hadoop.io.IOUtils.copyBytes(inStream, fs.create("u.data"), cfg)
+		]]>	
+		</hdp:script>
+	</hdp:script-tasklet>
+
+	<hdp:hive-tasklet id="initTableTasklet"
+		hive-client-ref="hive-client">
+		<hdp:script location="classpath:script.sql" />
+	</hdp:hive-tasklet>
+
+	<hdp:hive-tasklet id="loadDataScriptTasklet"
+		hive-client-ref="hive-client">
+		<hdp:script>
+			LOAD DATA INPATH 'u.data' OVERWRITE INTO TABLE u_data;
+		</hdp:script>
+	</hdp:hive-tasklet>
+
+	<hdp:hive-tasklet id="showDataTasklet"
+		hive-client-ref="hive-client">
+		<hdp:script>
+			select movieid, avg(rating) from u_data group by movieid;
+		</hdp:script>
+	</hdp:hive-tasklet>
+
+
+</beans>

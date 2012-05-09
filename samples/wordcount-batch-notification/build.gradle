@@ -1,0 +1,37 @@
+description = 'Spring Hadoop Admin Examples - Email Notification'
+
+apply plugin: 'base'
+apply plugin: 'java'
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    // Public Spring artefacts
+    maven{ 
+		url "http://repo.springsource.org/release"
+		url "http://repo.springsource.org/milestone"
+		url "http://repo.springsource.org/snapshot"
+		url "http://oss.sonatype.org/content/repositories/snapshots"
+		url "http://springframework.svn.sourceforge.net/svnroot/springframework/repos/repo-ext/"
+		url "http://www.datanucleus.org/downloads/maven2/"
+		url "http://conjars.org/repo"
+    }
+}
+
+dependencies {
+	compile "org.springframework:spring-context-support:$springVersion"
+    compile "org.springframework.batch:spring-batch-core:$springBatchVersion"
+	
+	runtime "javax.mail:mail:1.4.5"
+	runtime "jaf:activation:1.0.2"
+	runtime "hsqldb:hsqldb:$hsqldbVersion"	
+
+	testCompile "junit:junit:$junitVersion"
+	testCompile "org.springframework:spring-test:$springVersion"
+}
+
+
+defaultTasks 'clean', 'build'
