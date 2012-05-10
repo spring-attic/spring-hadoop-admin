@@ -7,9 +7,10 @@ admin application for spring hadoop.
 
 $ git checkout git@github.com:SpringSource/spring-hadoop-admin.git
 
-# build & run
+# build & run service
 
-$ ./gradlew jettyRun
+$ cd service
+$ ../gradlew jettyRun
 
 # Upload spring hadoop example
 
