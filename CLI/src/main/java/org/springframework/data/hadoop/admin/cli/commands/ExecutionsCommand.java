@@ -95,11 +95,27 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * stop all executions
 	 * 
 	 */
-	@CliCommand(value = "executions-stop-all", help = "Stop all job executions")
+	@CliCommand(value = "stop-all", help = "Stop all job executions")
 	public void stopExecutions() {
 		super.setCommandURL("jobs/executions.json");
 		super.callDeleteService();
 	}
+
+	/**
+	 * stop one execution
+	 * 
+	 * @param jobExecutionId the execution to be stoped
+	 * 
+	 */
+	@CliCommand(value = "stop-by-id", help = "stop  the JobExecution with the id provided")
+	public void stopExecution(@CliOption(key = { "jobExecutionId" }, mandatory = true, help = "Job Execution Id") final String jobExecutionId) {
+		String url = "jobs/executions/";
+		url += jobExecutionId;
+		url += ".json";
+		super.setCommandURL(url);
+		super.callDeleteService();
+	}
+
 
 	/**
 	 * restart the job executions
@@ -107,7 +123,7 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobName
 	 * @param jobInstanceId
 	 */
-	@CliCommand(value = "execution-restart-by-instanceId", help = "restart the JobExecutions for the job instance with the id provided")
+	//@CliCommand(value = "restart-by-instanceId", help = "restart the JobExecutions for the job instance with the id provided")
 	public void restartJobInstanceExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
 			@CliOption(key = { "jobInstanceId" }, mandatory = true, help = "Job Instance Id") final String jobInstanceId) {
 		String url = "jobs/";
@@ -120,21 +136,6 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 		MultiValueMap<String, Date> mvm = new LinkedMultiValueMap<String, Date>();
 		mvm.add("date", now);
 		super.callPostService(mvm);
-	}
-
-	/**
-	 * stop one execution
-	 * 
-	 * @param jobExecutionId the execution to be stoped
-	 * 
-	 */
-	@CliCommand(value = "execution-stop-by-id", help = "stop  the JobExecution with the id provided")
-	public void stopExecution(@CliOption(key = { "jobExecutionId" }, mandatory = true, help = "Job Execution Id") final String jobExecutionId) {
-		String url = "jobs/executions/";
-		url += jobExecutionId;
-		url += ".json";
-		super.setCommandURL(url);
-		super.callDeleteService();
 	}
 
 

@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<bean id="hadoopWorkflowDirectory" class="org.springframework.data.hadoop.admin.workflow.HadoopWorkflowDirectory">
-		<property name="hadoopWorkflowDirectory" value="hadoopjob"/>
+		<property name="hadoopWorkflowDirectory" value=""/>
 	</bean>
 	
 	<bean id="springHadoopJobLoader" class="org.springframework.batch.core.configuration.support.AutomaticJobRegistrar">

@@ -17,7 +17,7 @@ $ ./gradlew jettyRun
 
 3b.Click "File" menu
 
-3c.In the "Server Path" textfield, input "hadoopjob/job1"
+3c.In the "Server Path" textfield, input "wordcount"
 
 3d.Click "Browse..." button, and nagivate to "spring-hadoop-admin/samples/wordcount-batch" folder,
 

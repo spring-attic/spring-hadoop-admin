@@ -39,25 +39,34 @@ public class FsShellCommand implements CommandMarker {
 
 	@CliCommand(value = "dfs", help = "run dfs commands")
 	public void runDfsCommands(
-			@CliOption(key = { "ls" }, mandatory = false, specifiedDefaultValue = ".", help = "directory to be listed") final String lsPath, 
-			@CliOption(key = { "lsr" }, mandatory = false, specifiedDefaultValue = ".", help = "directory to be listed with recursion") final String lsrPath,
-			@CliOption(key = { "cat" }, mandatory = false, help = "file to be showed") final String catFile,
-			@CliOption(key = { "chgrp" }, mandatory = false, help = "file to be changed group") final String chgrpFile,
-			@CliOption(key = { "chmod" }, mandatory = false, help = "file to be changed right") final String chmodFile,
-			@CliOption(key = { "chown" }, mandatory = false, help = "file to be changed owner") final String chownFile,
-			@CliOption(key = { "copyFromLocal" }, mandatory = false, help = "file to be copyied") final String copyFromLocalFile,
-			@CliOption(key = { "copyToLocal" }, mandatory = false, help = "file to be copyied") final String copyToLocalFile,
-			@CliOption(key = { "count" }, mandatory = false, help = "file to be count") final String countFile,
-			@CliOption(key = { "cp" }, mandatory = false, help = "file to be copied") final String cpFile,
-			@CliOption(key = { "du" }, mandatory = false, help = "display sizes of file") final String duFile,
-			@CliOption(key = { "dus" }, mandatory = false, help = "display summary sizes of file") final String dusFile,
+			@CliOption(key = { "ls" }, mandatory = false, specifiedDefaultValue = ".", help = "directory to be listed") final String ls, 
+			@CliOption(key = { "lsr" }, mandatory = false, specifiedDefaultValue = ".", help = "directory to be listed with recursion") final String lsr,
+			@CliOption(key = { "cat" }, mandatory = false, help = "file to be showed") final String cat,
+			@CliOption(key = { "chgrp" }, mandatory = false, help = "file to be changed group") final String chgrp,
+			@CliOption(key = { "chmod" }, mandatory = false, help = "file to be changed right") final String chmod,
+			@CliOption(key = { "chown" }, mandatory = false, help = "file to be changed owner") final String chown,
+			@CliOption(key = { "copyFromLocal" }, mandatory = false, help = "copy from local to HDFS") final String copyFromLocal,
+			@CliOption(key = { "copyToLocal" }, mandatory = false, help = "copy HDFS to local") final String copyToLocal,
+			@CliOption(key = { "count" }, mandatory = false, help = "file to be count") final String count,
+			@CliOption(key = { "cp" }, mandatory = false, help = "file to be copied") final String cp,
+			@CliOption(key = { "du" }, mandatory = false, help = "display sizes of file") final String du,
+			@CliOption(key = { "dus" }, mandatory = false, help = "display summary sizes of file") final String dus,
 			@CliOption(key = { "expunge" }, mandatory = false, help = "empty the trash") final String expunge,
-			@CliOption(key = { "get" }, mandatory = false, help = "copy to local") final String getFile,
-			@CliOption(key = { "getmerge" }, mandatory = false, help = "merge file") final String getmergeFile,
-			@CliOption(key = { "rm" }, mandatory = false, help = "remove file") final String rmFile,
-			@CliOption(key = { "mkdir" }, mandatory = false, help = "create new directory") final String mkdirFile,
-			@CliOption(key = { "tail" }, mandatory = false, help = "tail the file") final String tailFile,
-			@CliOption(key = { "test" }, mandatory = false, help = "test a file") final String testFile
+			@CliOption(key = { "get" }, mandatory = false, help = "copy to local") final String get,
+			@CliOption(key = { "getmerge" }, mandatory = false, help = "merge file") final String getmerge,
+			@CliOption(key = { "mkdir" }, mandatory = false, help = "create new directory") final String mkdir,
+			@CliOption(key = { "moveFromLocal" }, mandatory = false, help = "move local to HDFS") final String moveFromLocal,
+			@CliOption(key = { "moveToLocal" }, mandatory = false, help = "move local to HDFS") final String moveToLocal,
+			@CliOption(key = { "mv" }, mandatory = false, help = "move file from source to destination") final String mv,
+			@CliOption(key = { "put" }, mandatory = false, help = "copy from local to HDFS") final String put,
+			@CliOption(key = { "rm" }, mandatory = false, help = "remove file") final String rm,
+			@CliOption(key = { "rmr" }, mandatory = false, help = "remove file with recursion") final String rmr,
+			@CliOption(key = { "setrep" }, mandatory = false, help = "set replication number") final String setrep,
+			@CliOption(key = { "stat" }, mandatory = false, help = "return stat information") final String stat,
+			@CliOption(key = { "tail" }, mandatory = false, help = "tail the file") final String tail,
+			@CliOption(key = { "test" }, mandatory = false, help = "check a file") final String test,
+			@CliOption(key = { "text" }, mandatory = false, help = "output the file in text format") final String text,
+			@CliOption(key = { "touchz" }, mandatory = false, help = "create a file of zero lenth") final String touchz
 			) {
 		try {
 			setupShell();
@@ -65,80 +74,115 @@ public class FsShellCommand implements CommandMarker {
 			Log.error("run HDFS shell failed. " + e.getMessage());
 		}
 		
-		if (lsPath != null) {
-			runCommand("-ls",lsPath);
+		if (ls != null) {
+			runCommand("-ls",ls);
 			return;
 		}
-		else if (lsrPath != null) {
-			runCommand("-lsr",lsrPath);
+		else if (lsr != null) {
+			runCommand("-lsr",lsr);
 			return;
 		}
-		else if (catFile != null) {
-			runCommand("-cat",catFile);
+		else if (cat != null) {
+			runCommand("-cat",cat);
 			return;
 		}
-		else if (chgrpFile != null) {
-			runCommand("-chgrp",chgrpFile);
+		else if (chgrp != null) {
+			runCommand("-chgrp",chgrp);
 			return;
 		}
-		else if (chmodFile != null) {
-			runCommand("-chmod",chmodFile);
+		else if (chmod != null) {
+			runCommand("-chmod",chmod);
 			return;
 		}
-		else if (chownFile != null) {
-			runCommand("-chown",chownFile);
+		else if (chown != null) {
+			runCommand("-chown",chown);
 			return;
 		}
-		else if (copyFromLocalFile != null) {
-			runCommand("-copyFromLocal",copyFromLocalFile);
+		else if (copyFromLocal != null) {
+			runCommand("-copyFromLocal",copyFromLocal);
 			return;
 		}
-		else if (copyToLocalFile != null) {
-			runCommand("-copyToLocal",copyToLocalFile);
+		else if (copyToLocal != null) {
+			runCommand("-copyToLocal",copyToLocal);
 			return;
 		}
-		else if (countFile != null) {
-			runCommand("-count",countFile);
+		else if (count != null) {
+			runCommand("-count",count);
 			return;
 		}
-		else if (cpFile != null) {
-			runCommand("-cp",cpFile);
+		else if (cp != null) {
+			runCommand("-cp",cp);
 			return;
 		}
-		else if (duFile != null) {
-			runCommand("-du",duFile);
+		else if (du != null) {
+			runCommand("-du",du);
 			return;
 		}
-		else if (dusFile != null) {
-			runCommand("-dus",dusFile);
+		else if (dus != null) {
+			runCommand("-dus",dus);
 			return;
 		}
 		else if (expunge != null) {
 			runCommand("-expunge",expunge);
 			return;
 		}
-		else if (getFile != null) {
-			runCommand("-get",getFile);
+		else if (get != null) {
+			runCommand("-get",get);
 			return;
 		}
-		else if (getmergeFile != null) {
-			runCommand("-getmerge",getmergeFile);
+		else if (getmerge != null) {
+			runCommand("-getmerge",getmerge);
 			return;
 		}
-		else if (rmFile != null) {
-			runCommand("-rm",rmFile);
+		else if (mkdir != null) {
+			runCommand("-mkdir",mkdir);
 			return;
 		}
-		else if (mkdirFile != null) {
-			runCommand("-mkdir",mkdirFile);
+		else if (moveFromLocal != null) {
+			runCommand("-moveFromLocal",moveFromLocal);
 			return;
 		}
-		else if (tailFile != null) {
-			runCommand("-tail",tailFile);
+		else if (moveToLocal != null) {
+			runCommand("-moveToLocal",moveToLocal);
 			return;
 		}
-		else if (testFile != null) {
-			runCommand("-test",testFile);
+		else if (mv != null) {
+			runCommand("-mv",mv);
+			return;
+		}
+		else if (put != null) {
+			runCommand("-put",put);
+			return;
+		}
+		else if (rm != null) {
+			runCommand("-rm",rm);
+			return;
+		}
+		else if (rmr != null) {
+			runCommand("-rmr",rmr);
+			return;
+		}
+		else if (setrep != null) {
+			runCommand("-setrep",setrep);
+			return;
+		}
+		else if (stat != null) {
+			runCommand("-stat",stat);
+			return;
+		}
+		else if (tail != null) {
+			runCommand("-tail",tail);
+			return;
+		}
+		else if (test != null) {
+			runCommand("-test",test);
+			return;
+		}else if (text != null) {
+			runCommand("-text",text);
+			return;
+		}
+		else if (touchz != null) {
+			runCommand("-touchz",touchz);
 			return;
 		}
 	}

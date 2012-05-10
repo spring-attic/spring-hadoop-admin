@@ -12,7 +12,7 @@ $ mvn clean package
 $ java -jar target/admin-cli-1.0.0.BUILD-SNAPSHOT.jar
 
 3. set Spring Hadoop Admin service URl:
-springHadoopAdmin>target --url http://localhost:8081/spring-hadoop-admin
+springHadoopAdmin>service target --url http://localhost:8081/spring-hadoop-admin
 springHadoopAdmin>info
 
 4. list jobs: 
@@ -29,7 +29,7 @@ to run Dfs shell:
 $ java -jar target/admin-cli-1.0.0.BUILD-SNAPSHOT.jar
 
 2. set HDFS URL
-springHadoopAdmin>fs.default.name --url hdfs://localhost:9000
+springHadoopAdmin>hdfs target --url hdfs://localhost:9000
 springHadoopAdmin>info
 
 3. run commands:

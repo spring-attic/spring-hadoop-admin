@@ -62,7 +62,12 @@ public class BaseCommand {
 	 */
 	public void callDeleteService() {
 		RestTemplate template = getRestTemplate();
-		template.delete(getCommandUrl());
+		//template.delete(getCommandUrl());
+		ResponseEntity<String> response = template.exchange(getCommandUrl(), HttpMethod.DELETE, null, String.class);
+		String message = response.getBody();
+		if(message != null){
+			Log.show(message);
+		}
 	}
 
 	/**

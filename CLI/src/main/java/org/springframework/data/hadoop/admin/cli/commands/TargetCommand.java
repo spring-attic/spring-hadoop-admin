@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TargetCommand implements CommandMarker {
 
-	@CliCommand(value = "target", help = "connect to Spring Hadoop Admin server")
+	@CliCommand(value = "service target", help = "connect to Spring Hadoop Admin server")
 	public void target(@CliOption(key = { "url" }, mandatory = true, help = "Spring Hadoop Admin service URL") final String url) {
 		try {
 			PropertyUtil.setTargetUrl(url);
@@ -39,7 +39,7 @@ public class TargetCommand implements CommandMarker {
 		}
 	}
 	
-	@CliCommand(value = "fs.default.name", help = "set HDFS URL")
+	@CliCommand(value = "hdfs target", help = "set HDFS URL")
 	public void dfsName(@CliOption(key = { "url" }, mandatory = true, help = "HDFS URL") final String url) {
 		try {
 			PropertyUtil.setDfsName(url);
