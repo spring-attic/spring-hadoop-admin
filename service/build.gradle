@@ -1,4 +1,4 @@
-description = 'Spring Hadoop Admin'
+description = 'Spring Hadoop Admin Service'
 
 apply plugin: 'base'
 apply plugin: 'java'
@@ -11,7 +11,6 @@ apply plugin: 'idea'
 repositories {
     mavenLocal()
     mavenCentral()
-    // Public Spring artefacts
     maven{ 
 		url "http://repo.springsource.org/release"
 		url "http://repo.springsource.org/milestone"
@@ -53,6 +52,16 @@ dependencies {
 	runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion"
 	
     testCompile "junit:junit:$junitVersion"
+}
+
+war {
+	baseName "spring-hadoop-admin"	
+}
+
+eclipse {
+	project {
+		name = "spring-hadoop-admin-service"
+	}	
 }
 
 httpPort = 8081

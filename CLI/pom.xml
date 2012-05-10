@@ -105,6 +105,13 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<projectNameTemplate>spring-hadoop-admin-cli</projectNameTemplate>
+				</configuration>
+			</plugin>
 		</plugins>
 
 	</build>
