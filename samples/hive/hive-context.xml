@@ -47,19 +47,19 @@
 	</hdp:script-tasklet>
 
 	<hdp:hive-tasklet id="initTableTasklet"
-		hive-client-ref="hive-client">
+		hive-client-ref="hiveClient">
 		<hdp:script location="classpath:script.sql" />
 	</hdp:hive-tasklet>
 
 	<hdp:hive-tasklet id="loadDataScriptTasklet"
-		hive-client-ref="hive-client">
+		hive-client-ref="hiveClient">
 		<hdp:script>
 			LOAD DATA INPATH 'u.data' OVERWRITE INTO TABLE u_data;
 		</hdp:script>
 	</hdp:hive-tasklet>
 
 	<hdp:hive-tasklet id="showDataTasklet"
-		hive-client-ref="hive-client">
+		hive-client-ref="hiveClient">
 		<hdp:script>
 			select movieid, avg(rating) from u_data group by movieid;
 		</hdp:script>

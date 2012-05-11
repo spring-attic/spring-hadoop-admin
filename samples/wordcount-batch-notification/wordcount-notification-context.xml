@@ -35,6 +35,15 @@
 
 	<tasklet id="wordcount-tasklet" job-ref="wc-job"/>
 	
+	<job id="wc-job"
+              input-path="/user/hadoop/input"
+              output-path="#{@pathUtils.getTimeBasedPathFromRoot()}"
+              mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper"
+              reducer="org.apache.hadoop.examples.WordCount.IntSumReducer"
+              validate-paths="false"
+              jar="${wordcount.jar.path}"
+              />
+	
 	<beans:bean id="emailNotification" class="org.springframework.data.hadoop.admin.examples.EmailNotification">
 		<beans:property name="mailSender" ref="mailSender"/>
 		<beans:property name="templateMessage" ref="templateMessage"/>
@@ -53,16 +62,7 @@
     p:rootPath="/user/hadoop/output"
     p:pathFormat="year/month/day/hour/minute/second"/>
 
-    <beans:bean id="wc-job" class="org.springframework.data.hadoop.mapreduce.JobFactoryBean"
-              p:configuration-ref="hadoop-configuration"
-              p:input-paths="/user/hadoop/input"
-              p:output-path="#{@pathUtils.getTimeBasedPathFromRoot()}"
-              p:mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper"
-              p:reducer="org.apache.hadoop.examples.WordCount.IntSumReducer"
-              p:validate-paths="false"
-              p:jar="${wordcount.jar.path}"
-              scope="prototype"/>
-
+    
 
 	<script-tasklet id="script-tasklet">
   	   <script language="groovy">

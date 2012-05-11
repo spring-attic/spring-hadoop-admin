@@ -1,0 +1,6 @@
+rootProject.name = 'spring-hadoop-admin'
+
+include 'service'
+include 'CLI'
+
+

@@ -1,31 +1,32 @@
+
 description = 'Spring Hadoop Admin CLI'
-
-apply plugin: 'base'
-apply plugin: 'java'
-
 apply plugin: 'eclipse'
-apply plugin: 'idea'
 
 repositories {
-    mavenLocal()
-    mavenCentral()
-    maven{ 
-		url "http://repo.springsource.org/release"
-		url "http://repo.springsource.org/milestone"
-		url "http://repo.springsource.org/snapshot"
-		url "http://oss.sonatype.org/content/repositories/snapshots"
-		url "http://springframework.svn.sourceforge.net/svnroot/springframework/repos/repo-ext/"
-		url "http://spring-roo-repository.springsource.org/release"
-		url "http://www.datanucleus.org/downloads/maven2/"
-		url "http://conjars.org/repo"
-    }
+	maven { url "http://spring-roo-repository.springsource.org/release" }
 }
 
 dependencies {
 	compile "org.springframework.shell:spring-shell:$springShellVersion"
+	compile "org.springframework:spring-web:$springVersion"
+}
 
-	testCompile "junit:junit:$junitVersion"
+task copyDependency(type: Copy) {
+	into "$buildDir/libs/dependency"
+	from configurations.runtime	
+}
 
+project.ext.springShellJar = configurations.runtime.find { file -> file.name.contains("spring-shell")}
+//println("spring shell name is:" + project.ext.springShellJar.name)
+
+project.ext.manifestClasspath = "dependency/" + springShellJar.name + " "
+project.ext.manifestClasspath = project.ext.manifestClasspath + configurations.runtime.collect{ File file -> "dependency/"+file.name}.join(' ')
+
+jar {
+	baseName "spring-hadoop-admin-cli"
+	manifest {
+		attributes 'Main-Class' : 'org.springframework.shell.Bootstrap', "Class-Path" : project.ext.manifestClasspath
+	}	
 }
 
 
@@ -36,4 +37,4 @@ eclipse {
 }
 
 
-defaultTasks 'clean', 'build'
+defaultTasks 'clean', 'build', 'copyDependency'

@@ -1,40 +1,20 @@
 description = 'Spring Hadoop Admin Service'
 
-apply plugin: 'base'
-apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'jetty'
-
 apply plugin: 'eclipse-wtp'
-apply plugin: 'idea'
 
 repositories {
-    mavenLocal()
-    mavenCentral()
-    maven{ 
-		url "http://repo.springsource.org/release"
-		url "http://repo.springsource.org/milestone"
-		url "http://repo.springsource.org/snapshot"
-		url "http://oss.sonatype.org/content/repositories/snapshots"
-		url "http://springframework.svn.sourceforge.net/svnroot/springframework/repos/repo-ext/"
-		url "http://www.datanucleus.org/downloads/maven2/"
-		url "http://conjars.org/repo"
-    }
+	maven { url "http://www.datanucleus.org/downloads/maven2/" }
 }
 
 dependencies {
     compile "org.springframework.data:spring-data-hadoop:$springHadoopVersion"
-    compile "org.apache.hadoop:hadoop-core:$hadoopVersion"
-	
-    compile "org.springframework.batch:spring-batch-admin-manager:$springBatchAdminVersion"
-    compile "org.springframework.batch:spring-batch-admin-resources:$springBatchAdminVersion"
-	
-	compile "commons-configuration:commons-configuration:$commonsConfigVersion"
+
 	runtime "commons-lang:commons-lang:$commonsLangVersion"
     runtime "org.codehaus.groovy:groovy:$groovyVersion"
 	runtime "hsqldb:hsqldb:$hsqldbVersion"	
-    runtime "org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion"
-    
+
 	//pig
 	runtime "org.apache.pig:pig:$pigVersion"
 	runtime "jline:jline:$jlineVersion"
@@ -51,7 +31,6 @@ dependencies {
 	runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
 	runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion"
 	
-    testCompile "junit:junit:$junitVersion"
 }
 
 war {

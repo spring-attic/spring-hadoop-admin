@@ -14,7 +14,7 @@
 		mapred.job.tracker=${mapred.job.tracker}
 	</hdp:configuration>
 
-	<hdp:pig configuration-ref="hadoop-configuration" exec-type="MAPREDUCE"/> 
+	<hdp:pig configuration-ref="hadoopConfiguration" exec-type="MAPREDUCE"/> 
 
 	<job id="pigJob" xmlns="http://www.springframework.org/schema/batch">
 		<step id="prepareData" next="loadData">
