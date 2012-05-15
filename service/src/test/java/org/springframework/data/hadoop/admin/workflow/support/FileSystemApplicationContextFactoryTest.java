@@ -74,18 +74,15 @@ public class FileSystemApplicationContextFactoryTest {
 					"classpath:org/springframework/data/hadoop/admin/data-source-context.xml",
 					"classpath:org/springframework/data/hadoop/admin/execution-context.xml", });
 		} catch (Exception e) {
-			logger.error("test create root application context failed.", e);
+			Assert.fail("test create root application context failed." + e.getMessage());
 		}
 		try {
 			JobRepository jobRepository = rootContext.getBean("jobRepository", JobRepository.class);
 			if (jobRepository == null) {
-				logger.error("test init root applicaton context failed");
-			}
-			else {
-				logger.info("test init root application context succeeded");
+				Assert.fail("test get JobRepository is null");
 			}
 		} catch (Exception e) {
-			logger.error("test init root application context failed.", e);
+			Assert.fail("test get JobRepository failed." + e.getMessage());
 		}
 		contextFactory.setApplicationContext(rootContext);
 		File descriptor = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support/context.xml");

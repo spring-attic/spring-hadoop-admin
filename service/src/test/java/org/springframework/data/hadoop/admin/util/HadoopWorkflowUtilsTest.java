@@ -26,9 +26,11 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.batch.core.configuration.JobRegistry;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.admin.SpringHadoopAdminWorkflowException;
+import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 import org.springframework.data.hadoop.admin.workflow.support.WorkflowArtifacts;
 
 
@@ -166,17 +168,34 @@ public class HadoopWorkflowUtilsTest {
 	}
 
 	@Test
-	public void testIsSpringBatchJob_springBatchJob() throws SpringHadoopAdminWorkflowException {
-		File folder = new File("src/test/resources/org/springframework/data/hadoop/admin/util/testSpringBatchJob");
+	public void testIsSpringBatchJob_springBatchJob() throws Exception {
+		File descriptor = new File(
+				"src/test/resources/org/springframework/data/hadoop/admin/util/testSpringBatchJob/context.xml");
+		HadoopWorkflowLaunchRequestAdapter adapter = new HadoopWorkflowLaunchRequestAdapter();
+		adapter.processUploadedFile(descriptor);
+		File folder = descriptor.getParentFile();
 		WorkflowArtifacts artifacts = HadoopWorkflowUtils.getWorkflowArtifacts(folder);
-		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
-				"classpath:org/springframework/data/hadoop/admin/env-context.xml",
-				"classpath:org/springframework/data/hadoop/admin/data-source-context.xml",
-				"classpath:org/springframework/data/hadoop/admin/execution-context.xml", });
+		ApplicationContext context = null;
+		try {
+			context = new ClassPathXmlApplicationContext(new String[] {
+					"classpath:org/springframework/data/hadoop/admin/env-context.xml",
+					"classpath:org/springframework/data/hadoop/admin/data-source-context.xml",
+					"classpath:org/springframework/data/hadoop/admin/execution-context.xml", });
 
-		boolean isSpringBatchJob = HadoopWorkflowUtils.isSpringBatchJob(context, artifacts);
-		logger.info("is spring batch job:" + isSpringBatchJob);
-		Assert.assertTrue(isSpringBatchJob);
+			boolean isSpringBatchJob = HadoopWorkflowUtils.isSpringBatchJob(context, artifacts);
+			logger.info("is spring batch job:" + isSpringBatchJob);
+			Assert.assertTrue("this job should be Spring Batch Job", isSpringBatchJob);
+		} catch (Exception e) {
+			Assert.fail("test create root application context failed." + e.getMessage());
+		}
+		try {
+			JobRepository jobRepository = context.getBean("jobRepository", JobRepository.class);
+			if (jobRepository == null) {
+				Assert.fail("test get JobRepository is null");
+			}
+		} catch (Exception e) {
+			Assert.fail("test get JobRepository failed." + e.getMessage());
+		}
 
 	}
 
