@@ -22,6 +22,7 @@ import org.springframework.shell.plugin.support.DefaultHistoryFileNameProvider;
 import org.springframework.stereotype.Component;
 
 /**
+ * history file name provider to customize Spring Shell's log file 
  * 
  * @author Jarred Li
  *

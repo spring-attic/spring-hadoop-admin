@@ -21,6 +21,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 /**
+ * Filter the uploaded file. If the file is uploaded to the specified directory, this file will be processed.
+ * Otherwise, it will be ignored.
+ * 
  * @author Jarred Li
  *
  */
@@ -29,6 +32,14 @@ public class HadoopWorkflowDirectoryFilter implements InitializingBean {
 	private String springHadoopWorkflowDirectoryName;
 
 
+	/**
+	 * whether the file is uploaded to specified folder
+	 * 
+	 * @param file the file is uploaded
+	 * 
+	 * @return True - If the file is uploaded to specified folder
+	 * 		   False - Otherwise
+	 */
 	public boolean filter(File file) {
 		return file.getParentFile().getAbsolutePath().contains(springHadoopWorkflowDirectoryName);
 	}

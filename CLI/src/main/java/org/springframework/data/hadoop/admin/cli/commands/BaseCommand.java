@@ -25,6 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * Base class for REST call commands.
+ * 
  * @author Jarred Li
  *
  */

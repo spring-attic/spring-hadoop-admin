@@ -16,6 +16,8 @@
 package org.springframework.data.hadoop.admin.workflow;
 
 /**
+ * Simple POJO to set Hadoop workflow location.
+ * 
  * @author Jarred Li
  *
  */

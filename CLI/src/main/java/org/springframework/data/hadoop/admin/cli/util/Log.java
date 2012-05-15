@@ -18,6 +18,8 @@ package org.springframework.data.hadoop.admin.cli.util;
 import org.springframework.roo.support.util.Assert;
 
 /**
+ * Utility class to log message to console
+ * 
  * @author Jarred Li
  *
  */

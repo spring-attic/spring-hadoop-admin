@@ -24,6 +24,8 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
+ * Simple Spring Batch Job wrapper if the uploaded Spring Hadoop descriptor is not Spring Batch Job.
+ * 
  * @author Jarred Li
  *
  */

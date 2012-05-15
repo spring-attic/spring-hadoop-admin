@@ -32,6 +32,9 @@ import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
 /**
+ * Spring Integration Endpoint to handle removed files
+ * If the removed file is wokflow desciptor (.xml), the registered job will be unregisted.
+ * 
  * @author Jarred Li
  *
  */
@@ -42,6 +45,11 @@ public class HadoopWorkflowRemoveRequestAdapter implements ApplicationContextAwa
 
 	private ApplicationContext context;
 
+	/**
+	 * Handle the removed file. If the removed file is workflow decriptor, unregister job.
+	 * 
+	 * @param file The file to be removed.
+	 */
 	@ServiceActivator
 	public void handleRemoveFile(File file) {
 		logger.info("remove file:" + file.getAbsolutePath());

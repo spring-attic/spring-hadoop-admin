@@ -23,12 +23,18 @@ import org.springframework.roo.shell.CommandMarker;
 import org.springframework.stereotype.Component;
 
 /**
+ * Commands to show meta information
+ * 
  * @author Jarred Li
  *
  */
 @Component
 public class InfoCommand implements CommandMarker {
 
+	/**
+	 * show the current service URL
+	 * 
+	 */
 	@CliCommand(value = "info", help = "list Spring Hadoop Admin CLI information")
 	public void getCLIInfo() {
 		try {

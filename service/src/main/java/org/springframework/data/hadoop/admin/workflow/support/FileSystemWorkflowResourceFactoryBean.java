@@ -28,6 +28,9 @@ import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
 import org.springframework.util.Assert;
 
 /**
+ * Factory bean to create list of <code>WorkflowArtifacts</code> from the specified folder:
+ * <code>getBaseWorkflowDescriptorDir</code>
+ * 
  * @author Jarred Li
  *
  */

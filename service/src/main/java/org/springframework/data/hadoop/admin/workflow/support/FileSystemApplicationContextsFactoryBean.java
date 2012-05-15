@@ -36,6 +36,8 @@ import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
 
 
 /**
+ * To create <code>FileSystemApplicationContextFactory</code> from specified <code>WorkflowArtifacts</code>
+ * 
  * @author Jarred Li
  *
  */

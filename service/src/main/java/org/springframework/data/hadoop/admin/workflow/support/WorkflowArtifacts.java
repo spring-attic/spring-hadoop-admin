@@ -18,6 +18,9 @@ package org.springframework.data.hadoop.admin.workflow.support;
 import org.springframework.core.io.Resource;
 
 /**
+ * A pair of artifacts, <code>Resource</code> which is workflow descriptor and <code>ClassLoader</code>
+ * which is used to load Beans in the descriptor.
+ * 
  * @author Jarred Li
  *
  */

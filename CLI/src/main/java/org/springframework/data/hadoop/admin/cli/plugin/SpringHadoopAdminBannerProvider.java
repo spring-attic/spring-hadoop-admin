@@ -24,6 +24,8 @@ import org.springframework.shell.plugin.support.DefaultBannerProvider;
 import org.springframework.stereotype.Component;
 
 /**
+ * Banner Provider to customize Spring Shell Banner
+ * 
  * @author Jarred Li
  *
  */

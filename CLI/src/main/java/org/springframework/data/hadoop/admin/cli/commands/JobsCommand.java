@@ -23,6 +23,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 /**
+ * Commands for Jobs, such as list job, start job
+ * 
  * @author Jarred Li
  *
  */

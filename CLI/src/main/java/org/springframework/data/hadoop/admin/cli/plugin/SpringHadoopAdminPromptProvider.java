@@ -21,6 +21,8 @@ import org.springframework.shell.plugin.support.DefaultPromptProvider;
 import org.springframework.stereotype.Component;
 
 /**
+ * Propmpt provider to customize Spring Shell's prompt text
+ * 
  * @author Jarred Li
  *
  */

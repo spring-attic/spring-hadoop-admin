@@ -29,6 +29,8 @@ import org.springframework.roo.shell.CommandMarker;
 import org.springframework.stereotype.Component;
 
 /**
+ * HDFS shell commands
+ * 
  * @author Jarred Li
  *
  */
@@ -37,6 +39,7 @@ public class FsShellCommand implements CommandMarker {
 
 	private FsShell shell;
 
+	
 	@CliCommand(value = "dfs", help = "run dfs commands")
 	public void runDfsCommands(
 			@CliOption(key = { "ls" }, mandatory = false, specifiedDefaultValue = ".", help = "directory to be listed") final String ls, 

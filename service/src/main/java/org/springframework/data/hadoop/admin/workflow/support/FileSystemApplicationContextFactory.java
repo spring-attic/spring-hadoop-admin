@@ -41,6 +41,8 @@ import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
 import org.springframework.util.Assert;
 
 /**
+ * <code>ApplicationContextFactory</code> which is used to create <code>FileSystemApplicationContextFactory</code>
+ * 
  * @author Jarred Li
  *
  */

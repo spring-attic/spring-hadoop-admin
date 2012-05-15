@@ -24,6 +24,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * Utility class to configure properties used to store service URL.
+ * 
  * @author Jarred Li
  *
  */

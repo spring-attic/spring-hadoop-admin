@@ -39,12 +39,12 @@ import org.springframework.data.hadoop.admin.workflow.support.WorkflowArtifacts;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
-
-
 /**
- * Handle uploaded file to specified location which is for Spring Hadoop. 
+ * Spring Integration Endpoint to handle uploaded file to create Spring Batch Job on the fly.
+ * To create a new Job, 3 kinds of files must be uploaded - jar, xml, and properties.
+ * 
  * If all the Spring Hadoop artifacts (jar, workflow descriptor, properties)
- * are uploaded, a new Spring Batch job will be registered.  
+ * are uploaded, a new Spring Batch job will be registered.   
  * 
  * @author Jarred Li
  *
