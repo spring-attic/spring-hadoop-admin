@@ -46,6 +46,8 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 
 /**
+ * Utility class for hadoop workflow descriptor
+ * 
  * @author Jarred Li
  *
  */
@@ -138,6 +140,11 @@ public class HadoopWorkflowDescriptorUtils {
 		config.save();
 	}
 
+	/**
+	 * create new entity resolver <code>org.xml.sax.EntityResolver</code>
+	 * 
+	 * @return 
+	 */
 	protected EntityResolver getEntityResolver() {
 		if (this.entityResolver == null) {
 			// Determine default EntityResolver to use.
@@ -152,18 +159,38 @@ public class HadoopWorkflowDescriptorUtils {
 		return this.entityResolver;
 	}
 
+	/**
+	 * get ClassLoader which is used to load Spring Beans
+	 * 
+	 * @return ClassLoader to load Beans
+	 */
 	public ClassLoader getBeanClassLoader() {
 		return this.beanClassLoader;
 	}
 
+	/**
+	 * set ClassLoader which is used to load Spring Beans
+	 * 
+	 * @param beanClassLoader 
+	 */
 	public void setBeanClassLoader(ClassLoader beanClassLoader) {
 		this.beanClassLoader = beanClassLoader;
 	}
 
+	/**
+	 * set ResourceLoader which is used to load resources
+	 * 
+	 * @param resourceLoader
+	 */
 	public void setResourceLoader(ResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
+	/**
+	 * get ResouseLoader which is used to load resource
+	 * 
+	 * @return ResouseLoader which is used to load resource
+	 */
 	public ResourceLoader getResourceLoader() {
 		return this.resourceLoader;
 	}

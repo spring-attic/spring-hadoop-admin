@@ -55,7 +55,7 @@ public class FileSystemApplicationContextsFactoryBean implements FactoryBean<Obj
 
 
 	public void setWorkflowArtifacts(WorkflowArtifacts[] workflowArtifacts) {
-		if(workflowArtifacts == null || workflowArtifacts.length == 0){
+		if (workflowArtifacts == null || workflowArtifacts.length == 0) {
 			return;
 		}
 		this.workflowArtifacts = Arrays.asList(workflowArtifacts);
@@ -112,8 +112,8 @@ public class FileSystemApplicationContextsFactoryBean implements FactoryBean<Obj
 
 		List<ApplicationContextFactory> applicationContextFactories = new ArrayList<ApplicationContextFactory>();
 		for (WorkflowArtifacts artifacts : workflowArtifacts) {
-			logger.info("workflow artifacts:" + artifacts.getWorkflowDescriptor().getFile().getAbsolutePath() +
-					",classloader:" + artifacts.getWorkflowClassLoader());
+			logger.info("workflow artifacts:" + artifacts.getWorkflowDescriptor().getFile().getAbsolutePath()
+					+ ",classloader:" + artifacts.getWorkflowClassLoader());
 			if (HadoopWorkflowUtils.isSpringBatchJob(applicationContext, artifacts)) {
 				logger.info("is spring batch job, will be loaded automatically");
 				FileSystemApplicationContextFactory factory = new FileSystemApplicationContextFactory();

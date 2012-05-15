@@ -15,6 +15,7 @@
  */
 package org.springframework.data.hadoop.admin.workflow.support;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +47,7 @@ public class FileSystemApplicationContextFactory implements ApplicationContextFa
 
 	private ClassLoader beanClassLoader;
 
-	private static final Log logger = LogFactory.getLog(ClassPathXmlApplicationContextFactory.class);
+	private static final Log logger = LogFactory.getLog(FileSystemApplicationContextFactory.class);
 
 	private Resource resource;
 
@@ -180,13 +181,13 @@ public class FileSystemApplicationContextFactory implements ApplicationContextFa
 	 * @see ApplicationContextFactory#createApplicationContext()
 	 */
 	public ConfigurableApplicationContext createApplicationContext() {
-
+		logger.info("resource is:" + resource);
 		if (resource == null) {
 			return parent;
 		}
 		try {
-			logger.debug("create application context, resource:" + resource.getFile().getAbsolutePath()
-					+ ", classloader:" + this.beanClassLoader);
+			logger.info("create application context, resource:" + resource.getFile().getAbsolutePath()
+					+ ", classloader:" + this.beanClassLoader + ". Parent is:" + parent);
 			FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext();
 			context.setClassLoader(this.beanClassLoader);
 			context.setParent(parent);
@@ -194,7 +195,12 @@ public class FileSystemApplicationContextFactory implements ApplicationContextFa
 			context.refresh();
 			return context;
 		} catch (Exception e) {
-			logger.error("create application context fail", e);
+			try {
+				logger.error("create application context fail. with resource:" + resource.getFile().getAbsolutePath(),
+						e);
+			} catch (IOException e1) {
+				logger.error("log error", e1);
+			}
 		}
 		return parent;
 	}

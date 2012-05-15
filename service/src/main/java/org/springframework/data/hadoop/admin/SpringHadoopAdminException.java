@@ -16,6 +16,8 @@
 package org.springframework.data.hadoop.admin;
 
 /**
+ * Base class for Spring Hadoop Admin exception handling
+ * 
  * @author Jarred Li
  *
  */
@@ -27,14 +29,29 @@ public class SpringHadoopAdminException extends Exception {
 	private static final long serialVersionUID = -2954725715945849099L;
 
 
+	/**
+	 * Default constructor
+	 * 
+	 */
 	public SpringHadoopAdminException() {
 		super();
 	}
 
+	/**
+	 * constructor with message
+	 * 
+	 * @param message The message for this exception
+	 */
 	public SpringHadoopAdminException(String message) {
 		super(message);
 	}
 
+	/**
+	 * constructor with message and throwable
+	 * 
+	 * @param message The message for this exception
+	 * @param t 
+	 */
 	public SpringHadoopAdminException(String message, Throwable t) {
 		super(message, t);
 	}

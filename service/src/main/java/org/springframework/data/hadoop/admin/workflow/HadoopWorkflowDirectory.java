@@ -36,6 +36,6 @@ public class HadoopWorkflowDirectory {
 	public void setHadoopWorkflowDirectory(String hadoopWorkflowDirectory) {
 		this.hadoopWorkflowDirectory = hadoopWorkflowDirectory;
 	}
-	
-	
+
+
 }

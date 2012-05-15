@@ -15,6 +15,8 @@
  */
 package org.springframework.data.hadoop.admin.workflow.support;
 
+import java.io.File;
+
 import junit.framework.Assert;
 
 import org.apache.commons.logging.Log;
@@ -22,7 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.io.Resource;
+
+import com.google.common.io.Files;
 
 /**
  * @author Jarred Li
@@ -31,9 +34,9 @@ import org.springframework.core.io.Resource;
 public class FileSystemWorkflowResourceFactoryBeanTest {
 
 	private FileSystemWorkflowResourceFactoryBean workflowResourceFactoryBean;
-	
+
 	private static final Log logger = LogFactory.getLog(FileSystemWorkflowResourceFactoryBeanTest.class);
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -56,6 +59,25 @@ public class FileSystemWorkflowResourceFactoryBeanTest {
 	 */
 	@Test
 	public void testGetObject() throws Exception {
+		File parentDir = new File(System.getProperty("java.io.tmpdir", "/tmp"), "batch/files");
+		logger.info("parent dir:" + parentDir.getAbsolutePath());
+		File target = new File(parentDir, "wordcount");
+		if (target.exists()) {
+			target.delete();
+		}
+		Files.createParentDirs(target);
+		File file = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support");
+		for (File f : file.listFiles()) {
+			File to = new File(target, f.getName());
+			Files.createParentDirs(to);
+			to.createNewFile();
+			Files.copy(f, to);
+		}
+
+		workflowResourceFactoryBean.setBaseWorkflowDescriptorDir("");
+		workflowResourceFactoryBean.afterPropertiesSet();
+		WorkflowArtifacts[] artifacts = workflowResourceFactoryBean.getObject();
+		Assert.assertEquals(1, artifacts.length);
 	}
 
 }

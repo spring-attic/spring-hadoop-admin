@@ -46,6 +46,8 @@ import org.springframework.data.hadoop.admin.workflow.support.WorkflowArtifacts;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 /**
+ * Utility class for Spring Hadoop workflow
+ * 
  * @author Jarred Li
  *
  */
@@ -57,30 +59,37 @@ public class HadoopWorkflowUtils {
 
 	public static String springHadoopTaskName = "spring-hadoop-step";
 
-	
+
 	/**
-	 * get workflow artifacts in the specified folder - workflow descriptor and classloader
+	 * get workflow artifacts aka, workflow descriptor and classloader from the specified folder 
 	 * 
 	 * @param workflowArtifactFolder folder contains artifacts
-	 * @return 
+	 * @return  <code>WorkflowArtifacts</code>
 	 */
-	public static WorkflowArtifacts getWorkflowArtifacts(File workflowArtifactFolder){
+	public static WorkflowArtifacts getWorkflowArtifacts(File workflowArtifactFolder) {
 		if (!workflowArtifactFolder.exists()) {
 			return null;
 		}
-		
+
 		WorkflowArtifacts result = null;
 		String[] descriptor = getWorkflowDescriptor(workflowArtifactFolder);
+		if (descriptor == null) {
+			return null;
+		}
 		String workflowDescriptorFileName = descriptor[0];
 		Resource resource = new FileSystemResource(new File(workflowDescriptorFileName));
-		
+
 		URL[] urls = HadoopWorkflowUtils.getWorkflowLibararies(workflowArtifactFolder);
+		if (urls == null || urls.length == 0) {
+			return null;
+		}
 		ClassLoader parentLoader = HadoopWorkflowUtils.class.getClassLoader();
 		ClassLoader loader = new URLClassLoader(urls, parentLoader);
-		
+
 		result = new WorkflowArtifacts(resource, loader);
 		return result;
 	}
+
 	/**
 	 * get the workflow descriptor file in XML.  
 	 * 
@@ -111,18 +120,9 @@ public class HadoopWorkflowUtils {
 		});
 
 		if (xmlFiles != null && xmlFiles.length == 1 && propertiesFiles != null && propertiesFiles.length == 1) {
-			File[] jarFiles = workflowArtifactFolder.listFiles(new FilenameFilter() {
-				@Override
-				public boolean accept(File dir, String name) {
-					return name.toLowerCase().endsWith(".jar");
-				}
-
-			});
-			if (jarFiles != null && jarFiles.length > 0) {
-				result = new String[2];
-				result[0] = xmlFiles[0].getAbsolutePath();
-				result[1] = propertiesFiles[0].getAbsolutePath();
-			}
+			result = new String[2];
+			result[0] = xmlFiles[0].getAbsolutePath();
+			result[1] = propertiesFiles[0].getAbsolutePath();
 		}
 		else {
 			logger.warn("uploaded workflow descriptor is incorrect");
@@ -185,6 +185,15 @@ public class HadoopWorkflowUtils {
 
 	}
 
+	/**
+	 * To judge Whether the uploaded workflow descriptor is Spring Batch Job
+	 * 
+	 * @param context Root ApplicationContext
+	 * @param artifacts workflow atifacts
+	 * @return true: if the workflow descritpor is Spring Batch Job
+	 * 		   false: otherwise
+	 * @throws SpringHadoopAdminWorkflowException
+	 */
 	public static boolean isSpringBatchJob(ApplicationContext context, WorkflowArtifacts artifacts)
 			throws SpringHadoopAdminWorkflowException {
 		if (context == null) {
@@ -251,7 +260,7 @@ public class HadoopWorkflowUtils {
 			throw new SpringHadoopAdminWorkflowException("create and register Spring Batch Job failed", e);
 		}
 	}
-	
+
 	/**
 	 * generate spring batch job name based on workflow descriptor name
 	 * 
@@ -276,8 +285,10 @@ public class HadoopWorkflowUtils {
 	}
 
 	/**
-	 * @param artifacts
-	 * @return
+	 * get workflow descriptor file name
+	 * 
+	 * @param artifacts workflow artificats	 * 
+	 * @return The workflow descriptor file name
 	 * @throws SpringHadoopAdminWorkflowException
 	 */
 	public static String getWorkflowDescriptor(final WorkflowArtifacts artifacts)

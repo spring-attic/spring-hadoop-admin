@@ -29,8 +29,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.hadoop.admin.SpringHadoopAdminWorkflowException;
-import org.springframework.data.hadoop.util.PathUtils;
 
 /**
  * @author Jarred Li
@@ -58,13 +59,11 @@ public class HadoopWorkflowDescriptorUtilsTest {
 		util = null;
 	}
 
-	/**
-	 * Test method for {@link org.springframework.data.hadoop.admin.util.HadoopWorkflowDescriptorUtils#replacePropertyPlaceHolder(java.io.File)}.
-	 */
+
 	@Test
 	public void testReplacePropertyPlaceHolder() {
-		String fileName = "src/test/resources/context.xml";
-		String properFilename = "src/test/resources/hadoop.properties";
+		String fileName = "src/test/resources/org/springframework/data/hadoop/admin/util/context.xml";
+		String properFilename = "src/test/resources/org/springframework/data/hadoop/admin/util/hadoop.properties";
 		File f = new File(fileName);
 		File propertiesFile = new File(properFilename);
 		logger.debug("path:" + f.getParentFile().getAbsolutePath());
@@ -72,24 +71,38 @@ public class HadoopWorkflowDescriptorUtilsTest {
 			try {
 				util.replacePropertyPlaceHolder(f, propertiesFile);
 			} catch (SpringHadoopAdminWorkflowException e) {
-				fail("exception was thrown when replacing proeprty place holder.");
+				fail("exception was thrown when replacing proeprty place holder." + e.getMessage());
 			}
 		}
 		FileSystemXmlApplicationContext ctx = new FileSystemXmlApplicationContext(fileName);
-		String[] names = ctx.getBeanNamesForType(PathUtils.class);
-		Assert.assertEquals(1, names.length);
+		SimpleBean bean = ctx.getBean("simpleBean", SimpleBean.class);
+		Assert.assertEquals("file://src/test/resources/org/springframework/data/hadoop/admin/util/hadoop-examples-1.0.0.jar",
+				bean.getPath());
+	}
+
+	@Test(expected = SpringHadoopAdminWorkflowException.class)
+	public void testReplacePropertyPlaceHolder_throwException() throws SpringHadoopAdminWorkflowException {
+		String fileName = "src/test/resources/org/springframework/data/hadoop/admin/util/invalid-context.xml";
+		String properFilename = "src/test/resources/org/springframework/data/hadoop/admin/util/hadoop.properties";
+		File f = new File(fileName);
+		File propertiesFile = new File(properFilename);
+		logger.debug("path:" + f.getParentFile().getAbsolutePath());
+		if (f != null) {
+			util.replacePropertyPlaceHolder(f, propertiesFile);
+		}
 	}
 
 	@Test
 	public void testReplaceJarPath() {
-		File f = new File("src/test/resources/hadoop.properties");
+		File f = new File("src/test/resources/org/springframework/data/hadoop/admin/util/hadoop.properties");
 		try {
 			util.replaceJarPath(f);
 		} catch (ConfigurationException e) {
 			fail("exception was thrown when replacing jar path.");
 		}
 		try {
-			PropertiesConfiguration config = new PropertiesConfiguration("src/test/resources/hadoop.properties");
+			PropertiesConfiguration config = new PropertiesConfiguration(
+					"src/test/resources/org/springframework/data/hadoop/admin/util/hadoop.properties");
 			String newValue = config.getString("jar.path");
 			Assert.assertNotNull(newValue, "jar.path should not be null");
 		} catch (ConfigurationException e) {
@@ -97,4 +110,21 @@ public class HadoopWorkflowDescriptorUtilsTest {
 		}
 	}
 
+	@Test
+	public void testClassLoader() {
+		ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
+		util.setBeanClassLoader(threadClassLoader);
+		ClassLoader loader = util.getBeanClassLoader();
+		Assert.assertNotNull(loader);
+		Assert.assertEquals(threadClassLoader, loader);
+	}
+
+	@Test
+	public void testResoureLoader() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		util.setResourceLoader(resourceLoader);
+		ResourceLoader loader = util.getResourceLoader();
+		Assert.assertNotNull(loader);
+		Assert.assertEquals(resourceLoader, loader);
+	}
 }

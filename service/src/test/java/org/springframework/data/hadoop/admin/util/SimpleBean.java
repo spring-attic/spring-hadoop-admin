@@ -13,45 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.data.hadoop.admin;
-
+package org.springframework.data.hadoop.admin.util;
 
 /**
- * Exception to handle abnormal workflow operations
- *  
  * @author Jarred Li
  *
  */
-public class SpringHadoopAdminWorkflowException extends SpringHadoopAdminException {
+public class SimpleBean {
+
+	private String path;
 
 	/**
-	 * 
+	 * @return the path
 	 */
-	private static final long serialVersionUID = -7884675315021716510L;
-
-	/**
-	 * default constructor
-	 */
-	public SpringHadoopAdminWorkflowException() {
-		super();
+	public String getPath() {
+		return path;
 	}
 
 	/**
-	 * Exception with message
-	 * 
-	 * @param message 
+	 * @param path the path to set
 	 */
-	public SpringHadoopAdminWorkflowException(String message) {
-		super(message);
+	public void setPath(String path) {
+		this.path = path;
 	}
 
-	/**
-	 * Exception with message and throwable
-	 * 
-	 * @param message
-	 * @param t
-	 */
-	public SpringHadoopAdminWorkflowException(String message, Throwable t) {
-		super(message, t);
-	}
+
 }

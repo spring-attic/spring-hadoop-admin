@@ -76,11 +76,12 @@ public class HadoopWorkflowLaunchRequestAdapter implements ApplicationContextAwa
 	@ServiceActivator
 	public void handleUploadedFile(final File workflowFile) {
 		logger.info("upload file:" + workflowFile.getAbsolutePath());
-		WorkflowArtifacts artifacts = procesUploadedFile(workflowFile);
-		if (artifacts == null) {
-			return;
-		}
 		try {
+			WorkflowArtifacts artifacts = procesUploadedFile(workflowFile);
+			if (artifacts == null) {
+				return;
+			}
+
 			boolean isSpringBatchJob = HadoopWorkflowUtils.isSpringBatchJob(context, artifacts);
 			logger.info("uploaded workflow artifacts is spring batch job? " + isSpringBatchJob);
 			if (isSpringBatchJob) {
@@ -101,15 +102,18 @@ public class HadoopWorkflowLaunchRequestAdapter implements ApplicationContextAwa
 	 * @param workflowFile workflow files that are being uploaded
 	 * @return <code>WorkflowArtifacts<code> when all jar, descriptor, properties are uploaded
 	 * 			otherwise, null 
+	 * @throws ConfigurationException 
+	 * @throws SpringHadoopAdminWorkflowException 
 	 */
-	private WorkflowArtifacts procesUploadedFile(final File workflowFile) {
+	private WorkflowArtifacts procesUploadedFile(final File workflowFile) throws ConfigurationException,
+			SpringHadoopAdminWorkflowException {
 		File parentFolder = workflowFile.getParentFile();
 		String[] descriptor = HadoopWorkflowUtils.getWorkflowDescriptor(parentFolder);
-		if (descriptor == null) {
+		URL[] urls = HadoopWorkflowUtils.getWorkflowLibararies(parentFolder);
+		if (descriptor == null || urls == null || urls.length == 0) {
 			return null;
 		}
 
-		URL[] urls = HadoopWorkflowUtils.getWorkflowLibararies(parentFolder);
 		ClassLoader parentLoader = HadoopWorkflowLaunchRequestAdapter.class.getClassLoader();
 		ClassLoader loader = new URLClassLoader(urls, parentLoader);
 
@@ -120,21 +124,12 @@ public class HadoopWorkflowLaunchRequestAdapter implements ApplicationContextAwa
 		HadoopWorkflowDescriptorUtils util = new HadoopWorkflowDescriptorUtils();
 		util.setBeanClassLoader(loader);
 
-		try {
-			util.replaceJarPath(workflowPropertyFile);
-		} catch (ConfigurationException e) {
-			logger.warn("replace jar.path property fail.", e);
-		}
-
-		boolean replaced = false;
-		try {
-			replaced = util.replacePropertyPlaceHolder(workflowDescriptorFile, workflowPropertyFile);
-		} catch (SpringHadoopAdminWorkflowException e) {
-			logger.warn("replace property place holder fail.", e);
-		}
+		util.replaceJarPath(workflowPropertyFile);
+		boolean replaced = util.replacePropertyPlaceHolder(workflowDescriptorFile, workflowPropertyFile);
 
 		if (!replaced) {
-			logger.warn("there is no property place holder in the workflow descriptor. MapReduce jar may not be found");
+			throw new SpringHadoopAdminWorkflowException(
+					"there is no property place holder in the workflow descriptor. MapReduce jar may not be found");
 		}
 
 		Resource resource = new FileSystemResource(new File(workflowDescriptorFileName));
@@ -149,27 +144,20 @@ public class HadoopWorkflowLaunchRequestAdapter implements ApplicationContextAwa
 	 * 
 	 * @throws Exception
 	 */
-	private void loadSpringBatchJob(WorkflowArtifacts artifacts) throws SpringHadoopAdminWorkflowException {
+	private void loadSpringBatchJob(WorkflowArtifacts artifacts) throws Exception {
 		String workflowDescriptor = HadoopWorkflowUtils.getWorkflowDescriptor(artifacts);
 		logger.info("create spring batch job:" + workflowDescriptor + ", classloader:"
 				+ artifacts.getWorkflowClassLoader());
-
-		try {
-			AutomaticJobRegistrar registarar = new AutomaticJobRegistrar();
-			FileSystemApplicationContextsFactoryBean factoryBean = new FileSystemApplicationContextsFactoryBean();
-			factoryBean.setApplicationContext(context);
-			factoryBean.setWorkflowArtifacts(new WorkflowArtifacts[] { artifacts });
-			registarar.setApplicationContextFactories((ApplicationContextFactory[]) factoryBean.getObject());
-			DefaultJobLoader jobLoader = new DefaultJobLoader();
-			JobRegistry jobRegistry = context.getBean("jobRegistry", JobRegistry.class);
-			jobLoader.setJobRegistry(jobRegistry);
-			registarar.setJobLoader(jobLoader);
-			registarar.start();
-		} catch (Exception e) {
-			logger.warn("load Spring Batch job fail");
-			throw new SpringHadoopAdminWorkflowException("load Spring Batch job fail");
-		}
-
+		AutomaticJobRegistrar registarar = new AutomaticJobRegistrar();
+		FileSystemApplicationContextsFactoryBean factoryBean = new FileSystemApplicationContextsFactoryBean();
+		factoryBean.setApplicationContext(context);
+		factoryBean.setWorkflowArtifacts(new WorkflowArtifacts[] { artifacts });
+		registarar.setApplicationContextFactories((ApplicationContextFactory[]) factoryBean.getObject());
+		DefaultJobLoader jobLoader = new DefaultJobLoader();
+		JobRegistry jobRegistry = context.getBean("jobRegistry", JobRegistry.class);
+		jobLoader.setJobRegistry(jobRegistry);
+		registarar.setJobLoader(jobLoader);
+		registarar.start();
 		logger.info("successfully load spring batch job");
 	}
 
