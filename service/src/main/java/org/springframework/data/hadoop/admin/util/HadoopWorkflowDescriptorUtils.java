@@ -100,12 +100,8 @@ public class HadoopWorkflowDescriptorUtils {
 				Node node = nodes.item(i);
 				if (node instanceof Element) {
 					Element e = (Element) node;
-					String originalValue = e.getAttribute("location");
-					logger.debug("original location:" + originalValue);
-					int lastSeperator = originalValue.lastIndexOf(File.separator);
-					originalValue = originalValue.substring(lastSeperator + 1);
-					String newValue = parentFolder + originalValue;
-					newValue = "file://" + workflowProperty.getAbsolutePath();
+					String newValue = workflowProperty.getAbsolutePath().replace("\\", "/");
+					newValue = "file://" + newValue;
 					e.setAttribute("location", newValue);
 					result = true;
 					logger.debug("new location after replaced:" + newValue);
@@ -135,6 +131,7 @@ public class HadoopWorkflowDescriptorUtils {
 	public void replaceJarPath(File workflowProperty) throws ConfigurationException {
 		PropertiesConfiguration config = new PropertiesConfiguration(workflowProperty);
 		String workflowFolder = workflowProperty.getParent();
+		workflowFolder.replace("\\", "/");
 		workflowFolder = "file://" + workflowFolder;
 		config.setProperty("jar.path", workflowFolder);
 		config.save();

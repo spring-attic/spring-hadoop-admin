@@ -110,8 +110,6 @@ public class FileSystemApplicationContextFactoryTest {
 		File folder = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support");
 		ClassLoader loader = HadoopWorkflowUtils.getWorkflowClassLoader(folder);
 		contextFactory.setBeanClassLoader(loader);
-		//		contextFactory.setResource(new FileSystemResource(
-		//				"src/test/resources/org/springframework/data/hadoop/admin/workflow/support/context.xml"));
 		ConfigurableApplicationContext newContext = contextFactory.createApplicationContext();
 		Object obj = newContext.getBean("wordcount-withscript-job");
 		Assert.assertNull(obj);
