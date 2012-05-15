@@ -63,7 +63,7 @@ public class PropertyUtil {
 	 * @return service URL
 	 * @throws ConfigurationException
 	 */
-	public static String getTargetURl() throws ConfigurationException {
+	public static String getTargetUrl() throws ConfigurationException {
 		String result = null;
 		PropertiesConfiguration config = new PropertiesConfiguration(adminPropertyFileName);
 		result = config.getString("targetUrl");

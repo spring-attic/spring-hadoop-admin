@@ -38,7 +38,7 @@ public class InfoCommand implements CommandMarker {
 	@CliCommand(value = "info", help = "list Spring Hadoop Admin CLI information")
 	public void getCLIInfo() {
 		try {
-			String serviceUrl = PropertyUtil.getTargetURl();
+			String serviceUrl = PropertyUtil.getTargetUrl();
 			Log.show("    service url:    " + serviceUrl);			
 			String dfsName = PropertyUtil.getDfsName();
 			Log.show("    fs default name:    " + dfsName);

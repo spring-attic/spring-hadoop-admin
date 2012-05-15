@@ -47,7 +47,7 @@ public class HadoopWorkflowDescriptorUtilsTest {
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUpBeforeClass() throws Exception {
+	public void setUp() throws Exception {
 		util = new HadoopWorkflowDescriptorUtils();
 	}
 
@@ -55,7 +55,7 @@ public class HadoopWorkflowDescriptorUtilsTest {
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDownAfterClass() throws Exception {
+	public void tearDown() throws Exception {
 		util = null;
 	}
 

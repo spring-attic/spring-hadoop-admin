@@ -90,7 +90,7 @@ public class BaseCommand {
 	 */
 	private String getCommandUrl() {
 		try {
-			String serviceUrl = PropertyUtil.getTargetURl();
+			String serviceUrl = PropertyUtil.getTargetUrl();
 			if(serviceUrl == null || serviceUrl.length() == 0){
 				Log.error("you must set Spring Hadoop Admin service URL first by running target command");
 			}
