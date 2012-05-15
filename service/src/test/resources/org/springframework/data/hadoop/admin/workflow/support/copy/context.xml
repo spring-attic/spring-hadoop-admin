@@ -9,9 +9,6 @@
 	</configuration>
 	
 	<batch:job id="wordcount-withscript-job">
-		<batch:step id="import" next="wordcount">
-			<batch:tasklet ref="script-tasklet"/>
-		</batch:step>
 		<batch:step id="wordcount">
 			<batch:tasklet ref="wordcount-tasklet"/>
 		</batch:step>
@@ -22,32 +19,5 @@
     <beans:bean class="org.springframework.data.hadoop.util.PathUtils" name="pathUtils" p:pathFormat="year/month/day/hour/minute/second" p:rootPath="/user/hadoop/output"/>
 
     <job id="wc-job" input-path="/user/hadoop/input" jar="${wordcount.jar.path}" mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper" output-path="#{@pathUtils.getTimeBasedPathFromRoot()}" reducer="org.apache.hadoop.examples.WordCount.IntSumReducer" validate-paths="false"/>
-
-
-	<script-tasklet id="script-tasklet">
-  	   <script language="groovy">
-  	   	// 'hack' default permissions to make Hadoop work on Windows
-		if (System.getProperty("os.name").startsWith("Windows")) {
-			// 0655 = -rwxr-xr-x
-			 org.apache.hadoop.mapreduce.JobSubmissionFiles.JOB_DIR_PERMISSION.fromShort((short) 0655);
-			 org.apache.hadoop.mapreduce.JobSubmissionFiles.JOB_FILE_PERMISSION.fromShort((short) 0655);
-		}
-
-  	   
-		inputPath = "/user/hadoop/input"
-		outputPath = "/user/hadoop/output"	
-		if (fsh.test(inputPath)) {
-		  fsh.rmr(inputPath)
-		}
-		if (fsh.test(outputPath)) {
-		  fsh.rmr(outputPath)
-		}
-
-		// copy using the streams directly (to be portable across envs)
-		inStream = cl.getResourceAsStream("data/nietzsche-chapter-1.txt")
-		org.apache.hadoop.io.IOUtils.copyBytes(inStream, fs.create(inputPath), cfg)
-	  </script>	
-    </script-tasklet>
-
 
 </beans:beans>
