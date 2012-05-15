@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 
 import com.google.common.io.Files;
 
@@ -66,14 +67,18 @@ public class FileSystemWorkflowResourceFactoryBeanTest {
 			target.delete();
 		}
 		Files.createParentDirs(target);
-		File file = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support");
+		File file = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support/copy");
+		File to = null;
 		for (File f : file.listFiles()) {
-			File to = new File(target, f.getName());
+			to = new File(target, f.getName());
 			Files.createParentDirs(to);
 			to.createNewFile();
 			Files.copy(f, to);
 		}
 
+		HadoopWorkflowLaunchRequestAdapter adapter = new HadoopWorkflowLaunchRequestAdapter();
+		adapter.processUploadedFile(to);
+		
 		workflowResourceFactoryBean.setBaseWorkflowDescriptorDir("");
 		workflowResourceFactoryBean.afterPropertiesSet();
 		WorkflowArtifacts[] artifacts = workflowResourceFactoryBean.getObject();

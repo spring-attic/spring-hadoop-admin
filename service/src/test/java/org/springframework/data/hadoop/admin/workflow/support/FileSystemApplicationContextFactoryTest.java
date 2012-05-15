@@ -17,6 +17,7 @@ package org.springframework.data.hadoop.admin.workflow.support;
 
 import java.io.File;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
@@ -29,7 +30,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.hadoop.admin.SpringHadoopAdminWorkflowException;
 import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
+import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 
 /**
  * @author Jarred Li
@@ -59,9 +62,11 @@ public class FileSystemApplicationContextFactoryTest {
 
 	/**
 	 * Test method for {@link org.springframework.data.hadoop.admin.workflow.support.FileSystemApplicationContextFactory#createApplicationContext()}.
+	 * @throws SpringHadoopAdminWorkflowException 
+	 * @throws ConfigurationException 
 	 */
 	@Test
-	public void testCreateApplicationContext() {
+	public void testCreateApplicationContext() throws ConfigurationException, SpringHadoopAdminWorkflowException {
 		ApplicationContext rootContext = null;
 		try {
 			rootContext = new ClassPathXmlApplicationContext(new String[] {
@@ -83,7 +88,10 @@ public class FileSystemApplicationContextFactoryTest {
 			logger.error("test init root application context failed.", e);
 		}
 		contextFactory.setApplicationContext(rootContext);
-		File folder = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support");
+		File descriptor = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support/context.xml");
+		HadoopWorkflowLaunchRequestAdapter adapter = new HadoopWorkflowLaunchRequestAdapter();
+		adapter.processUploadedFile(descriptor);
+		File folder = descriptor.getParentFile();
 		ClassLoader loader = HadoopWorkflowUtils.getWorkflowClassLoader(folder);
 		contextFactory.setBeanClassLoader(loader);
 		contextFactory.setResource(new FileSystemResource(

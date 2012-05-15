@@ -77,7 +77,7 @@ public class HadoopWorkflowLaunchRequestAdapter implements ApplicationContextAwa
 	public void handleUploadedFile(final File workflowFile) {
 		logger.info("upload file:" + workflowFile.getAbsolutePath());
 		try {
-			WorkflowArtifacts artifacts = procesUploadedFile(workflowFile);
+			WorkflowArtifacts artifacts = processUploadedFile(workflowFile);
 			if (artifacts == null) {
 				return;
 			}
@@ -105,7 +105,7 @@ public class HadoopWorkflowLaunchRequestAdapter implements ApplicationContextAwa
 	 * @throws ConfigurationException 
 	 * @throws SpringHadoopAdminWorkflowException 
 	 */
-	private WorkflowArtifacts procesUploadedFile(final File workflowFile) throws ConfigurationException,
+	public WorkflowArtifacts processUploadedFile(final File workflowFile) throws ConfigurationException,
 			SpringHadoopAdminWorkflowException {
 		File parentFolder = workflowFile.getParentFile();
 		String[] descriptor = HadoopWorkflowUtils.getWorkflowDescriptor(parentFolder);
