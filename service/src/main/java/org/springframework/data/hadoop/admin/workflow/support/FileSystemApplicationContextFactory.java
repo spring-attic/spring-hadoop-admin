@@ -37,6 +37,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
 import org.springframework.util.Assert;
 
 /**
@@ -191,7 +192,7 @@ public class FileSystemApplicationContextFactory implements ApplicationContextFa
 			FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext();
 			context.setClassLoader(this.beanClassLoader);
 			context.setParent(parent);
-			context.setConfigLocation("file://" + resource.getFile().getAbsolutePath());
+			context.setConfigLocation(HadoopWorkflowUtils.fileURLPrefix + resource.getFile().getAbsolutePath());
 			context.refresh();
 			return context;
 		} catch (Exception e) {

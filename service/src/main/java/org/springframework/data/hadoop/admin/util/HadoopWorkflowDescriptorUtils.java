@@ -101,7 +101,7 @@ public class HadoopWorkflowDescriptorUtils {
 				if (node instanceof Element) {
 					Element e = (Element) node;
 					String newValue = workflowProperty.getAbsolutePath().replace("\\", "/");
-					newValue = "file://" + newValue;
+					newValue = HadoopWorkflowUtils.fileURLPrefix + newValue;
 					e.setAttribute("location", newValue);
 					result = true;
 					logger.debug("new location after replaced:" + newValue);
@@ -132,7 +132,7 @@ public class HadoopWorkflowDescriptorUtils {
 		PropertiesConfiguration config = new PropertiesConfiguration(workflowProperty);
 		String workflowFolder = workflowProperty.getParent();
 		workflowFolder.replace("\\", "/");
-		workflowFolder = "file://" + workflowFolder;
+		workflowFolder = HadoopWorkflowUtils.fileURLPrefix + workflowFolder;
 		config.setProperty("jar.path", workflowFolder);
 		config.save();
 	}

@@ -53,6 +53,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
  */
 public class HadoopWorkflowUtils {
 
+	public static String fileURLPrefix = System.getProperty("os.name").toLowerCase().contains("windows") ? "file:///" : "file://";
+
 	private static final Log logger = LogFactory.getLog(HadoopWorkflowUtils.class);
 
 	public static String springHadoopJobPrefix = "spring-hadoop-job-";
@@ -235,7 +237,7 @@ public class HadoopWorkflowUtils {
 
 		final FileSystemXmlApplicationContext ctx = new FileSystemXmlApplicationContext();
 		ctx.setClassLoader(artifacts.getWorkflowClassLoader());
-		ctx.setConfigLocation("file://" + workflowDescriptor);
+		ctx.setConfigLocation(HadoopWorkflowUtils.fileURLPrefix + workflowDescriptor);
 
 		try {
 			SimpleJob job = new SimpleJob(generateSpringBatchJobName(artifacts));
