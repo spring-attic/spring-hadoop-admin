@@ -16,10 +16,10 @@ springHadoopAdmin>service target --url http://localhost:8081/spring-hadoop-admin
 springHadoopAdmin>info
 
 4. list jobs: 
-springHadoopAdmin>jobs-all
+springHadoopAdmin>job list
 
 5. run jobs:
-springHadoopAdmin>launch-job --jobName {jobName}
+springHadoopAdmin>job launch --jobName {jobName}
 
 
 

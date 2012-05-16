@@ -15,6 +15,8 @@
  */
 package org.springframework.data.hadoop.admin.cli.commands;
 
+import java.io.File;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.admin.cli.util.Log;
@@ -22,6 +24,7 @@ import org.springframework.data.hadoop.admin.cli.util.PropertyUtil;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -34,13 +37,35 @@ public class BaseCommand {
 
 	private String commandURL = "jobs.json";
 
+	public static String errorConnection = "I/O error: Connection refused";
+
+	public static String messageConnection = "Make sure you have set correct service URL, type \"info\" to check service URL."
+			+ " Or check if the service is working";
+
 	/**
 	 * call rest service with "Get" 
 	 */
 	public void callGetService() {
-		RestTemplate template = getRestTemplate();
-		String json = template.getForObject(getCommandUrl(), String.class);
-		Log.show(json);
+		try {
+			RestTemplate template = getRestTemplate();
+			String json = template.getForObject(getCommandUrl(), String.class);
+			Log.show(json);
+		} catch (Throwable t) {
+			showErrorMsg(t);
+		}
+	}
+
+
+	/**
+	 * @param t
+	 */
+	private void showErrorMsg(Throwable t) {
+		if (t.getMessage().contains(errorConnection)) {
+			Log.error("call service failed." + messageConnection);
+		}
+		else {
+			Log.error("call service failed. Reason:" + t.getMessage());
+		}
 	}
 
 
@@ -49,26 +74,52 @@ public class BaseCommand {
 	 * @param <T>
 	 */
 	public <T> void callPostService(T object) {
-		RestTemplate template = getRestTemplate();
-//		String message = template.postForObject(getCommandUrl(), object, String.class);
-		HttpEntity<T> entity = new HttpEntity<T>(object);
-		ResponseEntity<String> response = template.exchange(getCommandUrl(), HttpMethod.POST, entity, String.class);
-		String message = response.getBody();
-		if(message != null){
-			Log.show(message);
+		try {
+			RestTemplate template = getRestTemplate();
+			//		String message = template.postForObject(getCommandUrl(), object, String.class);
+			HttpEntity<T> entity = new HttpEntity<T>(object);
+			ResponseEntity<String> response = template.exchange(getCommandUrl(), HttpMethod.POST, entity, String.class);
+			String message = response.getBody();
+			if (message != null) {
+				Log.show(message);
+			}
+		} catch (Throwable t) {
+			showErrorMsg(t);
 		}
 	}
 
+
 	/**
 	 * call rest service with "Delete" 
+	 * @param object
 	 */
-	public void callDeleteService() {
-		RestTemplate template = getRestTemplate();
-		//template.delete(getCommandUrl());
-		ResponseEntity<String> response = template.exchange(getCommandUrl(), HttpMethod.DELETE, null, String.class);
-		String message = response.getBody();
-		if(message != null){
-			Log.show(message);
+	public <T> void callDeleteService(T object) {
+		try {
+			RestTemplate template = getRestTemplate();
+			//template.delete(getCommandUrl());
+			HttpEntity<T> entity = new HttpEntity<T>(object);
+			ResponseEntity<String> response = template.exchange(getCommandUrl(), HttpMethod.DELETE, entity,
+					String.class);
+			String message = response.getBody();
+			if (message != null) {
+				Log.show(message);
+			}
+		} catch (Throwable t) {
+			showErrorMsg(t);
+		}
+	}
+	
+	/**
+	 * Download file from server.
+	 */
+	public void callDownloadFile(String fileName) {
+		try {
+			RestTemplate template = getRestTemplate();
+			byte[] bytes = template.getForObject(getCommandUrl(), byte[].class);
+			FileCopyUtils.copy(bytes, new File(fileName));
+			Log.show("download file successfully. file name is:" + fileName);
+		} catch (Throwable t) {
+			showErrorMsg(t);
 		}
 	}
 
@@ -91,7 +142,7 @@ public class BaseCommand {
 	private String getCommandUrl() {
 		try {
 			String serviceUrl = PropertyUtil.getTargetUrl();
-			if(serviceUrl == null || serviceUrl.length() == 0){
+			if (serviceUrl == null || serviceUrl.length() == 0) {
 				Log.error("you must set Spring Hadoop Admin service URL first by running target command");
 			}
 			if (!serviceUrl.endsWith("/")) {

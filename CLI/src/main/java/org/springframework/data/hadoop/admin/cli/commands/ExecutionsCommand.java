@@ -37,10 +37,10 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * get all executions
 	 * 
 	 */
-	@CliCommand(value = "executions-all", help = "get all job executions, in order of most recent to least")
+	@CliCommand(value = "execution list", help = "get all job executions, in order of most recent to least")
 	public void getExecutions() {
-		super.setCommandURL("jobs/executions.json");
-		super.callGetService();
+		setCommandURL("jobs/executions.json");
+		callGetService();
 	}
 
 	/**
@@ -48,13 +48,13 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * 
 	 * @param jobName The job name 
 	 */
-	@CliCommand(value = "executions-by-name", help = "List the JobExecutions for the job name provided")
+	@CliCommand(value = "execution byName", help = "List the JobExecutions for the job name provided")
 	public void getJobExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName) {
 		String url = "jobs/";
 		url += jobName;
 		url += "/executions.json";
-		super.setCommandURL(url);
-		super.callGetService();
+		setCommandURL(url);
+		callGetService();
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobName The job name
 	 * @param jobInstanceId The job instance Id
 	 */
-	@CliCommand(value = "executions-by-instanceId", help = "List the JobExecutions for the job instance with the id provided")
+	@CliCommand(value = "execution byInstanceId", help = "List the JobExecutions for the job instance with the id provided")
 	public void getJobInstanceExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
 			@CliOption(key = { "jobInstanceId" }, mandatory = true, help = "Job Instance Id") final String jobInstanceId) {
 		String url = "jobs/";
@@ -71,8 +71,8 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 		url += "/";
 		url += jobInstanceId;
 		url += "/executions.json";
-		super.setCommandURL(url);
-		super.callGetService();
+		setCommandURL(url);
+		callGetService();
 	}
 
 
@@ -81,13 +81,13 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * 
 	 * @param jobExecutionId
 	 */
-	@CliCommand(value = "execution-by-id", help = "Show the JobExecution with the id provided")
+	@CliCommand(value = "execution byId", help = "Show the JobExecution with the id provided")
 	public void getExecution(@CliOption(key = { "jobExecutionId" }, mandatory = true, help = "Job Execution Id") final String jobExecutionId) {
 		String url = "jobs/executions/";
 		url += jobExecutionId;
 		url += ".json";
-		super.setCommandURL(url);
-		super.callGetService();
+		setCommandURL(url);
+		callGetService();
 	}
 
 
@@ -95,10 +95,10 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * stop all executions
 	 * 
 	 */
-	@CliCommand(value = "stop-all", help = "Stop all job executions")
+	@CliCommand(value = "job stopAll", help = "Stop all job executions")
 	public void stopExecutions() {
-		super.setCommandURL("jobs/executions.json");
-		super.callDeleteService();
+		setCommandURL("jobs/executions.json");
+		callDeleteService(null);
 	}
 
 	/**
@@ -107,13 +107,13 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobExecutionId the execution to be stoped
 	 * 
 	 */
-	@CliCommand(value = "stop-by-id", help = "stop  the JobExecution with the id provided")
+	@CliCommand(value = "job stopById", help = "stop  the JobExecution with the id provided")
 	public void stopExecution(@CliOption(key = { "jobExecutionId" }, mandatory = true, help = "Job Execution Id") final String jobExecutionId) {
 		String url = "jobs/executions/";
 		url += jobExecutionId;
 		url += ".json";
-		super.setCommandURL(url);
-		super.callDeleteService();
+		setCommandURL(url);
+		callDeleteService(null);
 	}
 
 
@@ -131,11 +131,11 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 		url += "/";
 		url += jobInstanceId;
 		url += "/executions.json";
-		super.setCommandURL(url);
+		setCommandURL(url);
 		Date now = new Date();
 		MultiValueMap<String, Date> mvm = new LinkedMultiValueMap<String, Date>();
 		mvm.add("date", now);
-		super.callPostService(mvm);
+		callPostService(mvm);
 	}
 
 

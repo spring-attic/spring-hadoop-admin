@@ -36,10 +36,10 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 	/**
 	 * list all jobs
 	 */
-	@CliCommand(value = "jobs-all", help = "list all jobs information")
+	@CliCommand(value = "job list", help = "list all jobs information")
 	public void getJobs() {
-		super.setCommandURL("jobs.json");
-		super.callGetService();
+		setCommandURL("jobs.json");
+		callGetService();
 	}
 
 	/**
@@ -47,13 +47,13 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 	 * 
 	 * @param jobName
 	 */
-	@CliCommand(value = "jobs-by-name", help = "list jobs information by name")
+	@CliCommand(value = "job byName", help = "list jobs information by name")
 	public void getJobsByName(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName) {
 		String url = "jobs/";
 		url += jobName;
 		url += ".json";
-		super.setCommandURL(url);
-		super.callGetService();
+		setCommandURL(url);
+		callGetService();
 	}
 
 	/**
@@ -61,13 +61,13 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 	 * 
 	 * @param jobName
 	 */
-	@CliCommand(value = "launch-job", help = "execute job")
+	@CliCommand(value = "job launch", help = "execute job")
 	public void executeJob(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
 			@CliOption(key = { "jobParameters" }, mandatory = false, help = "Job Parameters") final String jobParameters) {
 		String url = "jobs/";
 		url += jobName;
 		url += ".json";
-		super.setCommandURL(url);
+		setCommandURL(url);
 		MultiValueMap<String, String> mvm = new LinkedMultiValueMap<String, String>();
 		if (jobParameters == null) {
 			mvm.add("jobParameters", "fail=false, id=" + count++);
@@ -75,7 +75,7 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 		else {
 			mvm.add("jobParameters", jobParameters);
 		}
-		super.callPostService(mvm);
+		callPostService(mvm);
 	}
 
 }
