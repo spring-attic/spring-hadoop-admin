@@ -95,7 +95,7 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * stop all executions
 	 * 
 	 */
-	@CliCommand(value = "job stopAll", help = "Stop all job executions")
+	@CliCommand(value = "execution stopAll", help = "Stop all job executions")
 	public void stopExecutions() {
 		setCommandURL("jobs/executions.json");
 		callDeleteService(null);
@@ -107,7 +107,7 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobExecutionId the execution to be stoped
 	 * 
 	 */
-	@CliCommand(value = "job stopById", help = "stop  the JobExecution with the id provided")
+	@CliCommand(value = "execution stopById", help = "stop  the JobExecution with the id provided")
 	public void stopExecution(@CliOption(key = { "jobExecutionId" }, mandatory = true, help = "Job Execution Id") final String jobExecutionId) {
 		String url = "jobs/executions/";
 		url += jobExecutionId;
@@ -123,7 +123,7 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobName
 	 * @param jobInstanceId
 	 */
-	//@CliCommand(value = "restart-by-instanceId", help = "restart the JobExecutions for the job instance with the id provided")
+	//@CliCommand(value = "execution restartByInstanceId", help = "restart the JobExecutions for the job instance with the id provided")
 	public void restartJobInstanceExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
 			@CliOption(key = { "jobInstanceId" }, mandatory = true, help = "Job Instance Id") final String jobInstanceId) {
 		String url = "jobs/";

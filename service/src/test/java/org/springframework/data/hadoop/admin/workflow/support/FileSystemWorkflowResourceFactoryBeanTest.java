@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.data.hadoop.admin.util.Constant;
 import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 
 import com.google.common.io.Files;
@@ -60,7 +61,7 @@ public class FileSystemWorkflowResourceFactoryBeanTest {
 	 */
 	@Test
 	public void testGetObject() throws Exception {
-		File parentDir = new File(System.getProperty("java.io.tmpdir", "/tmp"), "batch/files");
+		File parentDir = new File(System.getProperty("java.io.tmpdir", "/tmp"), Constant.WORKFLOW_LOCATION);
 		logger.info("parent dir:" + parentDir.getAbsolutePath());
 		File target = new File(parentDir, "wordcount");
 		if (target.exists()) {

@@ -28,21 +28,21 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 /**
- * Commands to operate files, such as list files, upload files, delete files.
+ * Commands to operate on workflows, such as list workflow files, upload files, delete files.
  *  * 
  * @author Jarred Li
  *
  */
 @Component
-public class FileCommand extends BaseCommand implements CommandMarker {
+public class WorkflowCommand extends BaseCommand implements CommandMarker {
 
 	/**
-	 * list uploaded files
+	 * list uploaded workflow files
 	 * 
 	 */
-	@CliCommand(value = "file list", help = "list files")
+	@CliCommand(value = "workflow list", help = "list workflow files")
 	public void listFiles() {
-		setCommandURL("files.json");
+		setCommandURL("workflows.json");
 		callGetService();
 	}
 
@@ -51,9 +51,9 @@ public class FileCommand extends BaseCommand implements CommandMarker {
 	 * 
 	 * @param path
 	 */
-	@CliCommand(value = "file download", help = "download file")
+	@CliCommand(value = "workflow download", help = "download file")
 	public void downloadFile(@CliOption(key = { "path" }, mandatory = true, help = "the path of downloaded file") final String path) {
-		String url = "files/";
+		String url = "workflows/";
 		url = url + path;
 		setCommandURL(url);
 		String fileName = path.substring(path.lastIndexOf("/")+1);
@@ -66,14 +66,14 @@ public class FileCommand extends BaseCommand implements CommandMarker {
 	 * @param from The source file, can be a file or directory name
 	 * @param to  The server path
 	 */
-	@CliCommand(value = "file upload", help = "upload file")
+	@CliCommand(value = "workflow upload", help = "upload workflow file")
 	public void uploadFile(@CliOption(key = { "localPath" }, mandatory = true, help = "the path of source folder") final String localPath, @CliOption(key = { "serverPath" }, mandatory = true, help = "the path to store uploaded files") final String serverPath) {
 		File file = new File(localPath);
 		if (!file.exists()) {
 			Log.error("the source path does not exist");
 			return;
 		}
-		String url = "files/";
+		String url = "workflows/";
 		url += serverPath;
 		super.setCommandURL(url);
 		if (file.isFile()) {
@@ -89,9 +89,9 @@ public class FileCommand extends BaseCommand implements CommandMarker {
 	 * 
 	 * @param path Path in the server.
 	 */
-	@CliCommand(value = "file delete", help = "delete file")
+	@CliCommand(value = "workflow delete", help = "delete workflow file")
 	public void deleteFile(@CliOption(key = { "path" }, mandatory = true, help = "the path of delete file") final String path) {
-		String url = "files/";
+		String url = "workflows/";
 		setCommandURL(url);
 		MultiValueMap<String, String> mvm = new LinkedMultiValueMap<String, String>();
 		mvm.add("pattern", path);

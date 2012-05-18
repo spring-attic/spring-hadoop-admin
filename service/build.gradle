@@ -11,6 +11,8 @@ repositories {
 dependencies {
     compile "org.springframework.data:spring-data-hadoop:$springHadoopVersion"
 
+	runtime "org.codehaus.jackson:jackson-core-asl:$jacksonVersion"
+	runtime "org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion"
 	runtime "commons-lang:commons-lang:$commonsLangVersion"
     runtime "org.codehaus.groovy:groovy:$groovyVersion"
 	runtime "hsqldb:hsqldb:$hsqldbVersion"	

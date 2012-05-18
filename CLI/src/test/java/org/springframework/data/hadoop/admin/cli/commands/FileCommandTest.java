@@ -25,14 +25,14 @@ import org.junit.Test;
  */
 public class FileCommandTest {
 	
-	private FileCommand cmd;
+	private WorkflowCommand cmd;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		cmd = new FileCommand();
+		cmd = new WorkflowCommand();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class FileCommandTest {
 	}
 
 	/**
-	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.FileCommand#listFiles()}.
+	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.WorkflowCommand#listFiles()}.
 	 */
 	@Test
 	public void testListFiles() {
@@ -52,7 +52,7 @@ public class FileCommandTest {
 	}
 
 	/**
-	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.FileCommand#downloadFile(java.lang.String)}.
+	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.WorkflowCommand#downloadFile(java.lang.String)}.
 	 */
 	@Test
 	public void testDownloadFile() {
@@ -60,7 +60,7 @@ public class FileCommandTest {
 	}
 
 	/**
-	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.FileCommand#uploadFile(java.lang.String, java.lang.String)}.
+	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.WorkflowCommand#uploadFile(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testUploadFile() {
@@ -68,7 +68,7 @@ public class FileCommandTest {
 	}
 
 	/**
-	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.FileCommand#deleteFile(java.lang.String)}.
+	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.WorkflowCommand#deleteFile(java.lang.String)}.
 	 */
 	@Test
 	public void testDeleteFile() {

@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.hadoop.admin.util.Constant;
 import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
 import org.springframework.util.Assert;
 
@@ -72,7 +73,7 @@ public class FileSystemWorkflowResourceFactoryBean implements FactoryBean<Object
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull(this.baseWorkflowDescriptorDir, "must set base workflow descriptor directory");
-		File parentDir = new File(System.getProperty("java.io.tmpdir", "/tmp"), "batch/files");
+		File parentDir = new File(System.getProperty("java.io.tmpdir", "/tmp"), Constant.WORKFLOW_LOCATION);
 		List<WorkflowArtifacts> artifacts = new ArrayList<WorkflowArtifacts>();
 		File baseDir = new File(parentDir, this.baseWorkflowDescriptorDir);
 		if (baseDir.exists()) {

@@ -27,6 +27,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.batch.admin.service.FileInfo;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.JobFactory;
 import org.springframework.batch.core.configuration.JobRegistry;
@@ -132,6 +133,34 @@ public class HadoopWorkflowUtils {
 		return result;
 	}
 
+	public static boolean isValidWorkflow(List<FileInfo> files){
+		if(files == null || files.size() < 3){
+			return false;
+		}
+		boolean hasJar = false;
+		boolean hasProperties = false;
+		boolean hasXml = false;
+		for(FileInfo fi : files){
+			if(fi.getFileName().toLowerCase().endsWith(".jar")){
+				hasJar = true;
+				continue;
+			}
+			if(fi.getFileName().toLowerCase().endsWith(".properties")){
+				hasProperties = true;
+				continue;
+			}
+			if(fi.getFileName().toLowerCase().endsWith(".xml")){
+				hasXml = true;
+				continue;
+			}
+			if(hasJar && hasProperties && hasXml){
+				break;
+			}
+		}
+		return hasJar && hasProperties && hasXml;
+	}
+
+	
 	/**
 	 * get jars as URL list.
 	 * 
