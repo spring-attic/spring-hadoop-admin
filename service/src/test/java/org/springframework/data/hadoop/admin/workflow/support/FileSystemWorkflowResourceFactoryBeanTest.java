@@ -25,7 +25,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.data.hadoop.admin.util.Constant;
-import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
+import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
 
 import com.google.common.io.Files;
 
@@ -77,8 +77,9 @@ public class FileSystemWorkflowResourceFactoryBeanTest {
 			Files.copy(f, to);
 		}
 
-		HadoopWorkflowLaunchRequestAdapter adapter = new HadoopWorkflowLaunchRequestAdapter();
-		adapter.processUploadedFile(to);
+		File folder = to.getParentFile();
+		HadoopWorkflowUtils.processUploadedFile(folder);
+
 		
 		workflowResourceFactoryBean.setBaseWorkflowDescriptorDir("");
 		workflowResourceFactoryBean.afterPropertiesSet();

@@ -25,7 +25,6 @@ import org.springframework.batch.core.configuration.support.ApplicationContextFa
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
-import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 
 /**
  * @author Jarred Li
@@ -68,9 +67,8 @@ public class FileSystemApplicationContextsFactoryBeanTest {
 	@Test
 	public void testGetObject() throws Exception {
 		File descriptor = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support/context.xml");
-		HadoopWorkflowLaunchRequestAdapter adapter = new HadoopWorkflowLaunchRequestAdapter();
-		adapter.processUploadedFile(descriptor);
 		File folder = descriptor.getParentFile();
+		HadoopWorkflowUtils.processUploadedFile(folder);
 		WorkflowArtifacts artifacts = HadoopWorkflowUtils.getWorkflowArtifacts(folder);
 		contextFactoryBean.setWorkflowArtifacts(new WorkflowArtifacts[] { artifacts });
 		ApplicationContext rootContext = new ClassPathXmlApplicationContext(new String[] {

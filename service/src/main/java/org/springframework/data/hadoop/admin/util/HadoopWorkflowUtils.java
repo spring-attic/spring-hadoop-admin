@@ -25,12 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.admin.service.FileInfo;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.configuration.JobFactory;
 import org.springframework.batch.core.configuration.JobRegistry;
+import org.springframework.batch.core.configuration.support.ApplicationContextFactory;
+import org.springframework.batch.core.configuration.support.AutomaticJobRegistrar;
+import org.springframework.batch.core.configuration.support.DefaultJobLoader;
 import org.springframework.batch.core.configuration.support.ReferenceJobFactory;
 import org.springframework.batch.core.job.SimpleJob;
 import org.springframework.batch.core.repository.JobRepository;
@@ -41,8 +45,10 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.hadoop.admin.SpringHadoopAdminWorkflowException;
+import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 import org.springframework.data.hadoop.admin.workflow.SimpleSpringHadoopTasklet;
 import org.springframework.data.hadoop.admin.workflow.support.FileSystemApplicationContextFactory;
+import org.springframework.data.hadoop.admin.workflow.support.FileSystemApplicationContextsFactoryBean;
 import org.springframework.data.hadoop.admin.workflow.support.WorkflowArtifacts;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -347,4 +353,95 @@ public class HadoopWorkflowUtils {
 		return workflowDescriptor;
 	}
 
+	
+
+	/**
+	 * 
+	 * @param parentFolder
+	 * @param context
+	 */
+	public static void processAndRegisterWorkflow(File parentFolder, ApplicationContext context) {
+		try {
+			WorkflowArtifacts artifacts = processUploadedFile(parentFolder);
+			if (artifacts == null) {
+				return;
+			}
+
+			boolean isSpringBatchJob = HadoopWorkflowUtils.isSpringBatchJob(context, artifacts);
+			logger.info("uploaded workflow artifacts is spring batch job? " + isSpringBatchJob);
+			if (isSpringBatchJob) {
+				registerSpringBatchJob(artifacts, context);
+			}
+			else {
+				HadoopWorkflowUtils.createAndRegisterSpringBatchJob(context, artifacts);
+			}
+		} catch (Exception e) {
+			logger.error("handle uploaded file failed", e);
+		}
+	}
+
+	/**
+	 * process the uploaded file. Replace context place holder locaton, update jar path.
+	 * 
+	 * @param parentFolder parent folder of workflow files that are being uploaded
+	 * @return <code>WorkflowArtifacts<code> when all jar, descriptor, properties are uploaded
+	 * 			otherwise, null 
+	 * @throws ConfigurationException 
+	 * @throws SpringHadoopAdminWorkflowException 
+	 */
+	public static WorkflowArtifacts processUploadedFile(final File parentFolder) throws ConfigurationException,
+			SpringHadoopAdminWorkflowException {		
+		String[] descriptor = HadoopWorkflowUtils.getWorkflowDescriptor(parentFolder);
+		URL[] urls = HadoopWorkflowUtils.getWorkflowLibararies(parentFolder);
+		if (descriptor == null || urls == null || urls.length == 0) {
+			return null;
+		}
+
+		ClassLoader parentLoader = HadoopWorkflowLaunchRequestAdapter.class.getClassLoader();
+		ClassLoader loader = new URLClassLoader(urls, parentLoader);
+
+		String workflowDescriptorFileName = descriptor[0];
+		String workflowPropertyFileName = descriptor[1];
+		File workflowPropertyFile = new File(workflowPropertyFileName);
+		File workflowDescriptorFile = new File(workflowDescriptorFileName);
+		HadoopWorkflowDescriptorUtils util = new HadoopWorkflowDescriptorUtils();
+		util.setBeanClassLoader(loader);
+
+		util.replaceJarPath(workflowPropertyFile);
+		boolean replaced = util.replacePropertyPlaceHolder(workflowDescriptorFile, workflowPropertyFile);
+
+		if (!replaced) {
+			throw new SpringHadoopAdminWorkflowException(
+					"there is no property place holder in the workflow descriptor. MapReduce jar may not be found");
+		}
+
+		Resource resource = new FileSystemResource(new File(workflowDescriptorFileName));
+		WorkflowArtifacts artifacts = new WorkflowArtifacts(resource, loader);
+		return artifacts;
+	}
+
+	/**
+	 * register the new uploaded Spring Batch job 
+	 * 
+	 * @param artifacts workflow artifacts
+	 * @param context root Application Context 
+	 * 
+	 * @throws Exception
+	 */
+	public static void registerSpringBatchJob(WorkflowArtifacts artifacts, ApplicationContext context) throws Exception {
+		String workflowDescriptor = HadoopWorkflowUtils.getWorkflowDescriptor(artifacts);
+		logger.info("create spring batch job:" + workflowDescriptor + ", classloader:"
+				+ artifacts.getWorkflowClassLoader());
+		AutomaticJobRegistrar registarar = new AutomaticJobRegistrar();
+		FileSystemApplicationContextsFactoryBean factoryBean = new FileSystemApplicationContextsFactoryBean();
+		factoryBean.setApplicationContext(context);
+		factoryBean.setWorkflowArtifacts(new WorkflowArtifacts[] { artifacts });
+		registarar.setApplicationContextFactories((ApplicationContextFactory[]) factoryBean.getObject());
+		DefaultJobLoader jobLoader = new DefaultJobLoader();
+		JobRegistry jobRegistry = context.getBean("jobRegistry", JobRegistry.class);
+		jobLoader.setJobRegistry(jobRegistry);
+		registarar.setJobLoader(jobLoader);
+		registarar.start();
+		logger.info("successfully register spring batch job");
+	}
 }

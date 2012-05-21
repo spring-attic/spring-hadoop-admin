@@ -24,6 +24,8 @@ import org.springframework.batch.admin.service.FileInfo;
  *
  */
 public class WorkflowInfo {
+	
+	private String workflowName;
 
 	private String jobName;
 	
@@ -33,6 +35,20 @@ public class WorkflowInfo {
 	
 	private List<FileInfo> files;
 	
+	/**
+	 * @return the workflowName
+	 */
+	public String getWorkflowName() {
+		return workflowName;
+	}
+
+	/**
+	 * @param workflowName the workflowName to set
+	 */
+	public void setWorkflowName(String workflowName) {
+		this.workflowName = workflowName;
+	}
+
 	/**
 	 * @return the jobName
 	 */

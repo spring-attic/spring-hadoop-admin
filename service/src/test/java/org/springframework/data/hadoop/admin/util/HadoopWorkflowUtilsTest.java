@@ -30,7 +30,6 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.admin.SpringHadoopAdminWorkflowException;
-import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 import org.springframework.data.hadoop.admin.workflow.support.WorkflowArtifacts;
 
 
@@ -171,9 +170,8 @@ public class HadoopWorkflowUtilsTest {
 	public void testIsSpringBatchJob_springBatchJob() throws Exception {
 		File descriptor = new File(
 				"src/test/resources/org/springframework/data/hadoop/admin/util/testSpringBatchJob/context.xml");
-		HadoopWorkflowLaunchRequestAdapter adapter = new HadoopWorkflowLaunchRequestAdapter();
-		adapter.processUploadedFile(descriptor);
 		File folder = descriptor.getParentFile();
+		HadoopWorkflowUtils.processUploadedFile(folder);
 		WorkflowArtifacts artifacts = HadoopWorkflowUtils.getWorkflowArtifacts(folder);
 		ApplicationContext context = null;
 		try {
@@ -274,5 +272,22 @@ public class HadoopWorkflowUtilsTest {
 		Assert.assertNotNull(name);
 
 	}
+	
+	@Test
+	public void testprocessAndRegisterWorkflow() {
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
+				"classpath:org/springframework/data/hadoop/admin/env-context.xml",
+				"classpath:org/springframework/data/hadoop/admin/data-source-context.xml",
+				"classpath:org/springframework/data/hadoop/admin/execution-context.xml", });
+
+		File folder = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow");
+		HadoopWorkflowUtils.processAndRegisterWorkflow(folder, context);		
+
+		JobRegistry jobRegistry = context.getBean("jobRegistry", JobRegistry.class);
+		Collection<String> jobNames = jobRegistry.getJobNames();
+		Assert.assertEquals(1, jobNames.size());
+		Assert.assertTrue(jobNames.contains("wordcount-withscript-job"));
+	}
+
 
 }

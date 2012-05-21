@@ -217,13 +217,21 @@ public class SimpleWorkflowService implements WorkflowService, InitializingBean,
 			File[] wfArtifactsDirs = outputDir.listFiles();
 			for (File f : wfArtifactsDirs) {
 				if (f.isDirectory()) {
-					WorkflowInfo wfInfo = new WorkflowInfo();
-					wfInfo.setJobName(f.getName());
 					List<FileInfo> files = getFiles(f.getName() + "/**");
-					wfInfo.setFiles(files);
-					wfInfo.setValid(HadoopWorkflowUtils.isValidWorkflow(files));
-					wfInfo.setRegistered(isRegistered(f));
-					wfInfoes.add(wfInfo);
+					if (files.size() > 0) {
+						WorkflowInfo wfInfo = new WorkflowInfo();
+						wfInfo.setWorkflowName(f.getName());
+						wfInfo.setFiles(files);
+						boolean isValid = HadoopWorkflowUtils.isValidWorkflow(files);
+						wfInfo.setValid(isValid);
+						String jobName = getRegisteredJobName(f);
+						boolean isRegistered = jobName != null;
+						wfInfo.setRegistered(isRegistered);
+						if (isRegistered) {
+							wfInfo.setJobName(jobName);
+						}
+						wfInfoes.add(wfInfo);
+					}
 				}
 			}
 
@@ -231,8 +239,8 @@ public class SimpleWorkflowService implements WorkflowService, InitializingBean,
 		return new ArrayList<WorkflowInfo>(wfInfoes.subList(start, Math.min(start + pageSize, wfInfoes.size())));
 	}
 
-	private boolean isRegistered(File wfDirectory) {
-		boolean result = true;
+	private String getRegisteredJobName(File wfDirectory) {
+		String result = null;
 		WorkflowArtifacts artifacts = HadoopWorkflowUtils.getWorkflowArtifacts(wfDirectory);
 		if (artifacts != null) {
 			FileSystemApplicationContextFactory factory = new FileSystemApplicationContextFactory();
@@ -244,19 +252,21 @@ public class SimpleWorkflowService implements WorkflowService, InitializingBean,
 
 			if (springBatchJobs.size() > 0) {
 				for (String jobName : springBatchJobs.keySet()) {
-					result = isJobRegistered(jobName);
-					if (!result) {
+					if (isJobRegistered(jobName)) {
+						result = jobName;
 						break;
 					}
 				}
 			}
 			else {
 				String jobName = HadoopWorkflowUtils.generateSpringBatchJobName(artifacts);
-				isJobRegistered(jobName);
+				if (isJobRegistered(jobName)) {
+					result = jobName;
+				}
 			}
 		}
 		else {
-			result = false;
+			result = null;
 		}
 		return result;
 	}
@@ -358,6 +368,15 @@ public class SimpleWorkflowService implements WorkflowService, InitializingBean,
 	@Override
 	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
 		this.context = arg0;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.data.hadoop.admin.service.WorkflowService#processAndRegister(java.lang.String)
+	 */
+	@Override
+	public void processAndRegister(String path) {
+		File folder = new File("/" + outputDir.getAbsolutePath() + "/" + path);
+		HadoopWorkflowUtils.processAndRegisterWorkflow(folder, context);
 	}
 
 

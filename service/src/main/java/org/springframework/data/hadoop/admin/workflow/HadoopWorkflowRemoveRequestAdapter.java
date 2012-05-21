@@ -60,11 +60,6 @@ public class HadoopWorkflowRemoveRequestAdapter implements ApplicationContextAwa
 		try {
 			WorkflowArtifacts artifacts = HadoopWorkflowUtils.getWorkflowArtifacts(file.getParentFile());
 			if (artifacts != null) {
-				String workflowDescriptorFile = artifacts.getWorkflowDescriptor().getFile().getAbsolutePath();
-				//If the removed file is workflow descriptor, job will be unregistered.
-				if (!workflowDescriptorFile.equals(file.getAbsolutePath())) {
-					return;
-				}
 				FileSystemApplicationContextFactory factory = new FileSystemApplicationContextFactory();
 				factory.setApplicationContext(context);
 				factory.setBeanClassLoader(artifacts.getWorkflowClassLoader());

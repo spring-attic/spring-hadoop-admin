@@ -39,6 +39,8 @@ public interface WorkflowService {
 	List<FileInfo> getFiles(int startFile, int pageSize) throws IOException;
 	
 	List<WorkflowInfo> getWorkflows(int start, int pageSize) throws IOException;
+	
+	void processAndRegister(String path);
 
 	int countFiles();
 

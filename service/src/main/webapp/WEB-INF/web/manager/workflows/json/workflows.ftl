@@ -1,13 +1,17 @@
 <#import "/spring.ftl" as spring />
 <#assign url><@spring.url relativeUrl="${servletPath}/workflows"/></#assign>
+<#assign job_url><@spring.url relativeUrl="${servletPath}/jobs"/></#assign>
 "workflows" : {
       "resource" : "${baseUrl}${url}",
       "uploaded" : {
 <#if workflows?? && workflows?size!=0>
 	<#list workflows as wf>
-		"${wf.jobName}" : {
+		"${wf.workflowName}" : {
 			"valid" : "${wf.valid?string}",
-			"registered" : ${wf.registered?string},
+			"registered" : "${wf.registered?string}",
+			<#if wf.registered>
+			"job" : "${baseUrl}${job_url}/${wf.jobName}",
+			</#if>
 			"files" : {
 				<#list wf.files as file>
 					"${file.fileName}" : {

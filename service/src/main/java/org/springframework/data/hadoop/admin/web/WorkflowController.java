@@ -49,7 +49,7 @@ import org.springframework.web.util.HtmlUtils;
  *
  */
 @Controller
-public class WorkflowController {
+public class WorkflowController{
 
 	private static Log logger = LogFactory.getLog(WorkflowController.class);
 
@@ -121,14 +121,19 @@ public class WorkflowController {
 
 	}
 
+	@RequestMapping(value = "/workflows/register", method = RequestMethod.POST)
+	public String register(@RequestParam String path) throws Exception {
+		workflowService.processAndRegister(path);
+		return "redirect:workflows";
+	}
+
 	@RequestMapping(value = "/workflows", method = RequestMethod.GET)
 	public void list(ModelMap model, @RequestParam(defaultValue = "0") int startFile, @RequestParam(defaultValue = "20") int pageSize)
 			throws Exception {
-
 		//List<FileInfo> files = workflowService.getFiles(startFile, pageSize);
-		List<WorkflowInfo> workflows = workflowService.getWorkflows(startFile, pageSize);
+		List<WorkflowInfo> workflows = workflowService.getWorkflows(startFile, Integer.MAX_VALUE);
 		model.put("workflows", workflows);
-
+		
 	}
 
 	@RequestMapping(value = "/workflows/**", method = RequestMethod.GET)
@@ -170,5 +175,6 @@ public class WorkflowController {
 		return "redirect:workflows";
 
 	}
+
 
 }

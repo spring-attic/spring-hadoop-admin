@@ -32,7 +32,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.hadoop.admin.SpringHadoopAdminWorkflowException;
 import org.springframework.data.hadoop.admin.util.HadoopWorkflowUtils;
-import org.springframework.data.hadoop.admin.workflow.HadoopWorkflowLaunchRequestAdapter;
 
 /**
  * @author Jarred Li
@@ -86,9 +85,8 @@ public class FileSystemApplicationContextFactoryTest {
 		}
 		contextFactory.setApplicationContext(rootContext);
 		File descriptor = new File("src/test/resources/org/springframework/data/hadoop/admin/workflow/support/context.xml");
-		HadoopWorkflowLaunchRequestAdapter adapter = new HadoopWorkflowLaunchRequestAdapter();
-		adapter.processUploadedFile(descriptor);
 		File folder = descriptor.getParentFile();
+		HadoopWorkflowUtils.processUploadedFile(folder);
 		ClassLoader loader = HadoopWorkflowUtils.getWorkflowClassLoader(folder);
 		contextFactory.setBeanClassLoader(loader);
 		contextFactory.setResource(new FileSystemResource(
