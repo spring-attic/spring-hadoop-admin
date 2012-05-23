@@ -19,8 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,11 +54,6 @@ public class SimpleTemplateService extends BaseFileService implements TemplateSe
 			else {
 				logger.warn("invalid tempalte name");
 			}
-//			ti = new TemplateInfo();
-//			ti.setTemplateName(fileName);
-//			ti.setTemplateVersion("1.0.0");
-//			ti.setFileInfo(file);
-//			templates.add(ti);
 		}
 		return new ArrayList<TemplateInfo>(templates.subList(start, Math.min(start + pageSize, templates.size())));
 	}

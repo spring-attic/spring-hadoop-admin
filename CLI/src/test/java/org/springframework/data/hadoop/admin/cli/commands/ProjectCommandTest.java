@@ -15,8 +15,6 @@
  */
 package org.springframework.data.hadoop.admin.cli.commands;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -50,13 +48,6 @@ public class ProjectCommandTest {
 		cmd = null;
 	}
 
-	/**
-	 * Test method for {@link org.springframework.data.hadoop.admin.cli.commands.ProjectCommand#createNewProject(org.springframework.data.hadoop.admin.cli.commands.ProjectType, java.lang.String)}.
-	 */
-	@Test
-	public void testCreateNewProject() {
-		cmd.createNewProject(ProjectType.MapReduce, "wordcount");
-	}
 
 	@Test
 	public void testJSON() throws JsonGenerationException, JsonMappingException, IOException{
