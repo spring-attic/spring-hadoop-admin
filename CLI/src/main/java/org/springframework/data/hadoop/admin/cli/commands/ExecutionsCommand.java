@@ -17,6 +17,7 @@ package org.springframework.data.hadoop.admin.cli.commands;
 
 import java.util.Date;
 
+import org.springframework.roo.shell.CliAvailabilityIndicator;
 import org.springframework.roo.shell.CliCommand;
 import org.springframework.roo.shell.CliOption;
 import org.springframework.roo.shell.CommandMarker;
@@ -64,8 +65,7 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobInstanceId The job instance Id
 	 */
 	@CliCommand(value = "execution byInstanceId", help = "List the JobExecutions for the job instance with the id provided")
-	public void getJobInstanceExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
-			@CliOption(key = { "jobInstanceId" }, mandatory = true, help = "Job Instance Id") final String jobInstanceId) {
+	public void getJobInstanceExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, @CliOption(key = { "jobInstanceId" }, mandatory = true, help = "Job Instance Id") final String jobInstanceId) {
 		String url = "jobs/";
 		url += jobName;
 		url += "/";
@@ -124,8 +124,7 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobInstanceId
 	 */
 	//@CliCommand(value = "execution restartByInstanceId", help = "restart the JobExecutions for the job instance with the id provided")
-	public void restartJobInstanceExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
-			@CliOption(key = { "jobInstanceId" }, mandatory = true, help = "Job Instance Id") final String jobInstanceId) {
+	public void restartJobInstanceExecutions(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, @CliOption(key = { "jobInstanceId" }, mandatory = true, help = "Job Instance Id") final String jobInstanceId) {
 		String url = "jobs/";
 		url += jobName;
 		url += "/";
@@ -139,5 +138,10 @@ public class ExecutionsCommand extends BaseCommand implements CommandMarker {
 	}
 
 
+	@CliAvailabilityIndicator({ "execution list", "execution byName", "execution byInstanceId", "execution byId",
+			"execution stopAll","execution stopById" })
+	public boolean isCommandsAvailable() {
+		return isServiceUrlSet();
+	}
 
 }

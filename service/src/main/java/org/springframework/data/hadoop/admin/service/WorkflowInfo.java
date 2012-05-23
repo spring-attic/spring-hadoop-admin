@@ -17,8 +17,6 @@ package org.springframework.data.hadoop.admin.service;
 
 import java.util.List;
 
-import org.springframework.batch.admin.service.FileInfo;
-
 /**
  * @author Jarred Li
  *
@@ -27,7 +25,7 @@ public class WorkflowInfo {
 	
 	private String workflowName;
 
-	private String jobName;
+	private String jobName = "NULL";
 	
 	private boolean valid;
 	

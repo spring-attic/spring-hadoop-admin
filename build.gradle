@@ -25,3 +25,5 @@ allprojects {
 
 	}
 }
+
+defaultTasks 'clean', 'build'

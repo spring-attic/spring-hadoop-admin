@@ -17,6 +17,7 @@ package org.springframework.data.hadoop.admin.cli.commands;
 
 import java.io.File;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.hadoop.admin.cli.util.Log;
@@ -47,12 +48,23 @@ public class BaseCommand {
 	 */
 	public void callGetService() {
 		try {
-			RestTemplate template = getRestTemplate();
-			String json = template.getForObject(getCommandUrl(), String.class);
+			String json = getJson();
 			Log.show(json);
 		} catch (Throwable t) {
 			showErrorMsg(t);
 		}
+	}
+
+
+	/**
+	 * get JSON from server.
+	 * 
+	 * @return JSON String
+	 */
+	public String getJson() {
+		RestTemplate template = getRestTemplate();
+		String json = template.getForObject(generateCommandUrl(), String.class);
+		return json;
 	}
 
 
@@ -78,7 +90,7 @@ public class BaseCommand {
 			RestTemplate template = getRestTemplate();
 			//		String message = template.postForObject(getCommandUrl(), object, String.class);
 			HttpEntity<T> entity = new HttpEntity<T>(object);
-			ResponseEntity<String> response = template.exchange(getCommandUrl(), HttpMethod.POST, entity, String.class);
+			ResponseEntity<String> response = template.exchange(generateCommandUrl(), HttpMethod.POST, entity, String.class);
 			String message = response.getBody();
 			if (message != null) {
 				Log.show(message);
@@ -98,7 +110,7 @@ public class BaseCommand {
 			RestTemplate template = getRestTemplate();
 			//template.delete(getCommandUrl());
 			HttpEntity<T> entity = new HttpEntity<T>(object);
-			ResponseEntity<String> response = template.exchange(getCommandUrl(), HttpMethod.DELETE, entity,
+			ResponseEntity<String> response = template.exchange(generateCommandUrl(), HttpMethod.DELETE, entity,
 					String.class);
 			String message = response.getBody();
 			if (message != null) {
@@ -115,7 +127,7 @@ public class BaseCommand {
 	public void callDownloadFile(String fileName) {
 		try {
 			RestTemplate template = getRestTemplate();
-			byte[] bytes = template.getForObject(getCommandUrl(), byte[].class);
+			byte[] bytes = template.getForObject(generateCommandUrl(), byte[].class);
 			FileCopyUtils.copy(bytes, new File(fileName));
 			Log.show("download file successfully. file name is:" + fileName);
 		} catch (Throwable t) {
@@ -139,7 +151,7 @@ public class BaseCommand {
 	 * 
 	 * @return
 	 */
-	private String getCommandUrl() {
+	private String generateCommandUrl() {
 		try {
 			String serviceUrl = PropertyUtil.getTargetUrl();
 			if (serviceUrl == null || serviceUrl.length() == 0) {
@@ -168,6 +180,26 @@ public class BaseCommand {
 	 */
 	public void setCommandURL(String commandURL) {
 		this.commandURL = commandURL;
+	}
+
+	/**
+	 * judge whether service URL is set 
+	 * 
+	 * @return true - if service URL is set
+	 * 		   false - otherwise
+	 */
+	protected boolean isServiceUrlSet() {
+		boolean result = true;
+		try {
+			String serviceUrl = PropertyUtil.getTargetUrl();
+			if (serviceUrl == null || serviceUrl.length() == 0) {
+				result = false;
+			}
+		} catch (ConfigurationException e) {
+			Log.error("read properties failed");
+			result = false;
+		}
+		return result;
 	}
 
 

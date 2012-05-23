@@ -28,8 +28,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.hadoop.admin.service.FileInfo;
-import org.springframework.data.hadoop.admin.service.WorkflowInfo;
-import org.springframework.data.hadoop.admin.service.WorkflowService;
+import org.springframework.data.hadoop.admin.service.TemplateInfo;
+import org.springframework.data.hadoop.admin.service.TemplateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -47,29 +47,30 @@ import org.springframework.web.util.HtmlUtils;
  *
  */
 @Controller
-public class WorkflowController{
+public class TemplateController{
 
-	private static Log logger = LogFactory.getLog(WorkflowController.class);
+	private static Log logger = LogFactory.getLog(TemplateController.class);
 
-	private WorkflowService workflowService;
+	private TemplateService templateService;
 
 	/**
-	 * The service used to manage file lists and uploads.
+	 * The service used to manage template lists and uploads.
 	 * 
-	 * @param workflowService the {@link WorkflowService} to set
+	 * @param templateService the {@link TemplateService} to set
 	 */
 	@Autowired
-	public void setWorkflowService(WorkflowService workflowService) {
-		this.workflowService = workflowService;
+	public void setTemplateService(TemplateService templateService) {
+		this.templateService = templateService;
 	}
 
-	@RequestMapping(value = "/workflows", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/templates", method = RequestMethod.POST)
 	public String uploadRequest(@RequestParam String path, @RequestParam MultipartFile file, ModelMap model, @RequestParam(defaultValue = "0") int startFile, @RequestParam(defaultValue = "20") int pageSize, @ModelAttribute("date") Date date, Errors errors)
 			throws Exception {
 		return upload(path, file, model, startFile, pageSize, date, errors);
 	}
 
-	@RequestMapping(value = "/workflows/{path}", method = RequestMethod.POST)
+	@RequestMapping(value = "/templates/{path}", method = RequestMethod.POST)
 	public String upload(@PathVariable String path, @RequestParam MultipartFile file, ModelMap model, @RequestParam(defaultValue = "0") int startFile, @RequestParam(defaultValue = "20") int pageSize, @ModelAttribute("date") Date date, Errors errors)
 			throws Exception {
 
@@ -82,9 +83,9 @@ public class WorkflowController{
 		}
 
 		try {
-			FileInfo dest = workflowService.createFile(path + "/" + originalFilename);
-			file.transferTo(workflowService.getResource(dest.getPath()).getFile());
-			workflowService.publish(dest);
+			FileInfo dest = templateService.createFile(path + "/" + originalFilename);
+			file.transferTo(templateService.getResource(dest.getPath()).getFile());
+			templateService.publish(dest);
 			model.put("uploaded", dest.getPath());
 		} catch (IOException e) {
 			errors.reject("file.upload.failed", new Object[] { originalFilename }, "File upload failed for "
@@ -102,40 +103,33 @@ public class WorkflowController{
 
 		if (errors.hasErrors()) {
 			list(model, startFile, pageSize);
-			return "workflows";
+			return "templates";
 		}
 
-		return "redirect:workflows";
+		return "redirect:templates";
 
 	}
 
-	@RequestMapping(value = "/workflows/register", method = RequestMethod.POST)
-	public String register(@RequestParam String path) throws Exception {
-		workflowService.processAndRegister(path);
-		return "redirect:workflows";
-	}
-
-	@RequestMapping(value = "/workflows", method = RequestMethod.GET)
+	@RequestMapping(value = "/templates", method = RequestMethod.GET)
 	public void list(ModelMap model, @RequestParam(defaultValue = "0") int startFile, @RequestParam(defaultValue = "20") int pageSize)
 			throws Exception {
-		//List<FileInfo> files = workflowService.getFiles(startFile, pageSize);
-		List<WorkflowInfo> workflows = workflowService.getWorkflows(startFile, Integer.MAX_VALUE);
-		model.put("workflows", workflows);
+		List<TemplateInfo> templates = templateService.getTemplates(startFile, pageSize);
+		model.put("templates", templates);
 		
 	}
 
-	@RequestMapping(value = "/workflows/**", method = RequestMethod.GET)
+	@RequestMapping(value = "/templates/**", method = RequestMethod.GET)
 	public String get(HttpServletRequest request, HttpServletResponse response, ModelMap model, @RequestParam(defaultValue = "0") int startFile, @RequestParam(defaultValue = "20") int pageSize, @ModelAttribute("date") Date date, Errors errors)
 			throws Exception {
 
 		list(model, startFile, pageSize);
 
-		String path = request.getPathInfo().substring("/workflows/".length());
-		Resource file = workflowService.getResource(path);
+		String path = request.getPathInfo().substring("/templates/".length());
+		Resource file = templateService.getResource(path);
 		if (file == null || !file.exists()) {
 			errors.reject("file.download.missing", new Object[] { path },
 					"File download failed for missing file at path=" + HtmlUtils.htmlEscape(path));
-			return "workflows";
+			return "templates";
 		}
 
 		response.setContentType("application/octet-stream");
@@ -145,22 +139,22 @@ public class WorkflowController{
 			errors.reject("file.download.failed", new Object[] { path },
 					"File download failed for path=" + HtmlUtils.htmlEscape(path));
 			logger.info("File download failed for path=" + path, e);
-			return "workflows";
+			return "templates";
 		}
 
 		return null;
 
 	}
 
-	@RequestMapping(value = "/workflows", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/templates", method = RequestMethod.DELETE)
 	public String delete(ModelMap model, @RequestParam(defaultValue = "**") String pattern) throws Exception {
 
-		int deletedCount = workflowService.delete(pattern);
+		int deletedCount = templateService.delete(pattern);
 
 		model.put("files", new ArrayList<String>());
 		model.put("deletedCount", deletedCount);
 
-		return "redirect:workflows";
+		return "redirect:templates";
 
 	}
 

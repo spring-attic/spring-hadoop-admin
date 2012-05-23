@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.data.hadoop.admin.util;
+package org.springframework.data.hadoop.admin.service;
+
+import java.io.File;
 
 /**
  * @author Jarred Li
  *
  */
-public interface Constant {
-	
-	//String ONLY_TIMESTAMP_PATTERN = "\\.[0-9]{8}\\.[0-9]{6}";
-	
-	//String TIMESTAMP_PATTERN = ".*\\.[0-9]{8}\\.[0-9]{6}";
-	
-	String ROOT_LOCATION = "spring-hadoop-admin";
+public interface FileRemover {
 
-	String WORKFLOW_LOCATION = "spring-hadoop-admin/workflows";
-	
-	String TEMPLATE_LOCATION = "spring-hadoop-admin/templates";
+	void beforeRemove(File file);
 	
 }

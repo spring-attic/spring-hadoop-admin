@@ -1,0 +1,41 @@
+description = 'Spring Hadoop Admin Template'
+
+apply plugin: 'java'
+
+task zipCascading(type: Zip) {
+	baseName "Cascading-Template"
+	version "1_0_0"
+	from "Cascading"
+}
+
+task zipHBase(type: Zip) {
+	baseName "HBase-Template"
+	version "1_0_0"
+	from "HBase"
+}
+
+task zipHDFS(type: Zip) {
+	baseName "HDFS-Template"
+	version "1_0_0"
+	from "HDFS"
+}
+
+task zipHive(type: Zip) {
+	baseName "Hive-Template"
+	version "1_0_0"
+	from "Hive"
+}
+
+task zipMR(type: Zip) {
+	baseName "MapReduce-Template"	
+	version "1_0_0"
+	from "MapReduce"
+}
+
+task zipPig(type: Zip) {
+	baseName "Pig-Template"
+	version "1_0_0"
+	from "Pig"
+}
+
+defaultTasks 'zipCascading', 'zipHBase', 'zipHDFS', 'zipHive', 'zipMR', 'zipPig'

@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.data.hadoop.admin.service;
-
-import java.io.File;
+package org.springframework.data.hadoop.admin.cli.commands;
 
 /**
  * @author Jarred Li
  *
  */
-public interface WorkflowRemover {
-
-	void beforeRemove(File file);
+public enum ProjectType {
+	MapReduce,
+	HDFS,
+	Pig,
+	Hive,
+	Cascading,
+	HBase;
 	
 }

@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.springframework.data.hadoop.admin.templates</groupId>
+	<artifactId>wordcount</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>wordcount</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<hadoop.version>1.0.0</hadoop.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-core</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/upload</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.outputDirectory}</directory>
+									<includes>
+										<include>*.xml</include>
+										<include>*.properties</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}</directory>
+									<includes>
+										<include>*.jar</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

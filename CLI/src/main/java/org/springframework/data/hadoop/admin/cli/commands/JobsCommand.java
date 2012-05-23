@@ -15,6 +15,7 @@
  */
 package org.springframework.data.hadoop.admin.cli.commands;
 
+import org.springframework.roo.shell.CliAvailabilityIndicator;
 import org.springframework.roo.shell.CliCommand;
 import org.springframework.roo.shell.CliOption;
 import org.springframework.roo.shell.CommandMarker;
@@ -62,8 +63,7 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 	 * @param jobName
 	 */
 	@CliCommand(value = "job launch", help = "execute job")
-	public void executeJob(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, 
-			@CliOption(key = { "jobParameters" }, mandatory = false, help = "Job Parameters") final String jobParameters) {
+	public void executeJob(@CliOption(key = { "jobName" }, mandatory = true, help = "Job Name") final String jobName, @CliOption(key = { "jobParameters" }, mandatory = false, help = "Job Parameters") final String jobParameters) {
 		String url = "jobs/";
 		url += jobName;
 		url += ".json";
@@ -78,4 +78,8 @@ public class JobsCommand extends BaseCommand implements CommandMarker {
 		callPostService(mvm);
 	}
 
+	@CliAvailabilityIndicator({ "job list", "job byName", "job launch" })
+	public boolean isCommandsAvailable() {
+		return isServiceUrlSet();
+	}
 }

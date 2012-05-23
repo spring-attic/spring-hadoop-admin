@@ -21,7 +21,7 @@ import java.io.File;
  * @author Dave Syer
  *
  */
-public interface WorkflowSender {
+public interface FileSender {
 	
 	void send(File file);
 

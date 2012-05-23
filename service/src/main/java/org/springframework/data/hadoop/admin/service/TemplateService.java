@@ -13,22 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.data.hadoop.admin.util;
+package org.springframework.data.hadoop.admin.service;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Jarred Li
  *
  */
-public interface Constant {
-	
-	//String ONLY_TIMESTAMP_PATTERN = "\\.[0-9]{8}\\.[0-9]{6}";
-	
-	//String TIMESTAMP_PATTERN = ".*\\.[0-9]{8}\\.[0-9]{6}";
-	
-	String ROOT_LOCATION = "spring-hadoop-admin";
+public interface TemplateService extends FileService{
 
-	String WORKFLOW_LOCATION = "spring-hadoop-admin/workflows";
-	
-	String TEMPLATE_LOCATION = "spring-hadoop-admin/templates";
+	List<TemplateInfo> getTemplates(int start, int pageSize) throws IOException;
 	
 }

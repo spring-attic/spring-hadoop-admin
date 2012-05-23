@@ -74,17 +74,17 @@
 					<td>${wf.files?first.fileName}</td>
 					<td rowspan="${wf.files?size}">
 					<form action="${url}" method="POST" enctype="multipart/form-data" encoding="multipart/form-data">
-						<input id="path" type="hidden" name="path" value="${wf.jobName}"/>
+						<input id="path" type="hidden" name="path" value="${wf.workflowName}"/>
 						<input id="file" type="file" name="file" />
 						<input id="workflow_upload" type="submit" value="Upload"/>
 					</form>
 					<br/>
 					<form action="${url}/register" method="POST">
-						<input id="path" type="hidden" name="path" value="${wf.jobName}"/>
+						<input id="path" type="hidden" name="path" value="${wf.workflowName}"/>
 						<input id="workflow_register" type="submit" value="Register"/>
 					</form>
 					<form action="${url}" method="POST">
-						<input id="pattern" type="hidden" name="pattern" value="${wf.jobName}/**"/>
+						<input id="pattern" type="hidden" name="pattern" value="${wf.workflowName}/**"/>
 						<input type="hidden" name="_method" value="DELETE"/>	
 						<input id="workflow_delete" type="submit" value="Delete"/>
 					</form>

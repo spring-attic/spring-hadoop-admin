@@ -19,10 +19,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FsShell;
 import org.springframework.data.hadoop.admin.cli.util.Log;
 import org.springframework.data.hadoop.admin.cli.util.PropertyUtil;
+import org.springframework.roo.shell.CliAvailabilityIndicator;
 import org.springframework.roo.shell.CliCommand;
 import org.springframework.roo.shell.CliOption;
 import org.springframework.roo.shell.CommandMarker;
@@ -39,6 +41,30 @@ public class FsShellCommand implements CommandMarker {
 
 	private FsShell shell;
 
+	@CliAvailabilityIndicator({ "dfs"})
+	public boolean isCommandsAvailable() {
+		return isHDFSUrlSet();
+	}
+	
+	/**
+	 * judge whether HDFS URL is set 
+	 * 
+	 * @return true - if HDFS URL is set
+	 * 		   false - otherwise
+	 */
+	protected boolean isHDFSUrlSet() {
+		boolean result = true;
+		try {
+			String dfsName = PropertyUtil.getDfsName();
+			if (dfsName == null || dfsName.length() == 0) {
+				result = false;
+			}
+		} catch (ConfigurationException e) {
+			Log.error("read properties failed");
+			result = false;
+		}
+		return result;
+	}
 	
 	@CliCommand(value = "dfs", help = "run dfs commands")
 	public void runDfsCommands(
