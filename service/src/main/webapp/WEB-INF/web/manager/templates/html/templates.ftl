@@ -12,10 +12,8 @@
 	<#assign url><@spring.url relativeUrl="${servletPath}/templates"/></#assign>
 	<form id="registerFileForm" action="${url}" method="POST" enctype="multipart/form-data" encoding="multipart/form-data">
 
-		<ol>
-			<li><label for="filePath">Template Path</label><input id="path" type="text" name="path" /><li/>
-			<li><label for="fileXml">Template File</label><input id="file" type="file" name="file" /></li>
-		</ol>
+		<input id="path" type="hidden" name="path" />
+		<label for="fileXml">Template File</label><input id="file" type="file" name="file" />
 		<input id="uploadFile" type="submit" value="Upload" name="uploadFile" />
 		<!-- Spring JS does not support multipart forms so no Ajax here -->
 

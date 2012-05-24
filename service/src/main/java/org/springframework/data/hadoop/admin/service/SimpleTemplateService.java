@@ -43,6 +43,8 @@ public class SimpleTemplateService extends BaseFileService implements TemplateSe
 		TemplateInfo ti;
 		for (FileInfo file : files) {
 			String fileName = file.getFileName();
+			int index = fileName.lastIndexOf(".");
+			fileName = fileName.substring(0,index);
 			String[] elements = fileName.split("-");
 			if (elements != null && elements.length == 3) {
 				ti = new TemplateInfo();
