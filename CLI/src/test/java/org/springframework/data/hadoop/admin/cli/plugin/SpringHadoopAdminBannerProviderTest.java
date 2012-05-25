@@ -70,7 +70,7 @@ public class SpringHadoopAdminBannerProviderTest{
 	 */
 	@Test
 	public void testGetWelcomMessage() {
-		String msg = bannerProvider.getWelcomMessage();
+		String msg = bannerProvider.getWelcomeMessage();
 		Assert.assertNotNull(msg);
 	}
 
