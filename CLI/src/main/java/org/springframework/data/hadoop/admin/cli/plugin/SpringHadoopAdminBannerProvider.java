@@ -60,9 +60,9 @@ public class SpringHadoopAdminBannerProvider extends DefaultBannerProvider
 	}
 
 	/* (non-Javadoc)
-	 * @see org.springframework.shell.plugin.BannerProvider#getWelcomMessage()
+	 * @see org.springframework.shell.plugin.BannerProvider#getWelcomeMessage()
 	 */
-	public String getWelcomMessage() {
+	public String getWelcomeMessage() {
 		return "Welcome to Spring Hadoop Admin CLI";
 	}
 	
