@@ -37,7 +37,7 @@
 	
 	<job id="wc-job"
               input-path="/user/hadoop/input"
-              output-path="#{@pathUtils.getTimeBasedPathFromRoot()}"
+              output-path="#{@pathUtils.format()}"
               mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper"
               reducer="org.apache.hadoop.examples.WordCount.IntSumReducer"
               validate-paths="false"
@@ -60,7 +60,7 @@
 
     <beans:bean name="pathUtils" class="org.springframework.data.hadoop.util.PathUtils" 
     p:rootPath="/user/hadoop/output"
-    p:pathFormat="year/month/day/hour/minute/second"/>
+    p:pathFormat="yyyy/MM/dd/HH/mm/ss"/>
 
     
 

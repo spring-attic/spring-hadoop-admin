@@ -27,10 +27,10 @@
 
 	<beans:bean name="pathUtils"
 		class="org.springframework.data.hadoop.util.PathUtils" p:rootPath="${wordcount-job.output.path}"
-		p:pathFormat="year/month/day/hour/minute/second" />
+		p:pathFormat="yyyy/MM/dd/HH/mm/ss" />
 
 	<job id="wordcount-job" input-path="${wordcount-job.input.path}"
-		output-path="#{@pathUtils.getTimeBasedPathFromRoot()}" mapper="${wordcount-job.mapper.class}"
+		output-path="#{@pathUtils.format()}" mapper="${wordcount-job.mapper.class}"
 		reducer="${wordcount-job.reducer.class}"
 		jar="${wordcount-job.jar.path}" validate-paths="false" />
 		
