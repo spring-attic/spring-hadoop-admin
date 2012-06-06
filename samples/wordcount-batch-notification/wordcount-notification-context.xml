@@ -37,7 +37,7 @@
 	
 	<job id="wc-job"
               input-path="/user/hadoop/input"
-              output-path="#{@pathUtils.format()}"
+              output-path="#{ T(org.springframework.data.hadoop.util.PathUtils).format('/user/hadoop/output/%1$tY/%1$tm/%1$td/%1$tH/%1$tM/%1$tS')}"
               mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper"
               reducer="org.apache.hadoop.examples.WordCount.IntSumReducer"
               validate-paths="false"
@@ -57,12 +57,6 @@
 		<beans:property name="from" value="jiali@vmware.com"></beans:property>
 		<beans:property name="to" value="leejianwei@126.com"></beans:property>
 	</beans:bean>
-
-    <beans:bean name="pathUtils" class="org.springframework.data.hadoop.util.PathUtils" 
-    p:rootPath="/user/hadoop/output"
-    p:pathFormat="yyyy/MM/dd/HH/mm/ss"/>
-
-    
 
 	<script-tasklet id="script-tasklet">
   	   <script language="groovy">

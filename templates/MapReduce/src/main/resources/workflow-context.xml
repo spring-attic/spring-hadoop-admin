@@ -25,12 +25,9 @@
 
 	<tasklet id="wordcount-tasklet" job-ref="wordcount-job" />
 
-	<beans:bean name="pathUtils"
-		class="org.springframework.data.hadoop.util.PathUtils" p:rootPath="${wordcount-job.output.path}"
-		p:pathFormat="yyyy/MM/dd/HH/mm/ss" />
-
 	<job id="wordcount-job" input-path="${wordcount-job.input.path}"
-		output-path="#{@pathUtils.format()}" mapper="${wordcount-job.mapper.class}"
+		output-path="#{ T(org.springframework.data.hadoop.util.PathUtils).format('/user/hadoop/output/%1$tY/%1$tm/%1$td/%1$tH/%1$tM/%1$tS')}"
+		mapper="${wordcount-job.mapper.class}"
 		reducer="${wordcount-job.reducer.class}"
 		jar="${wordcount-job.jar.path}" validate-paths="false" />
 		
