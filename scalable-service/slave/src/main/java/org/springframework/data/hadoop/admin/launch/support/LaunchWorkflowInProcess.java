@@ -34,7 +34,7 @@ public class LaunchWorkflowInProcess implements LaunchWorkflow {
 	 */
 	@Override
 	public WorkflowExecution launch(WorkflowLaunchRequest launchRequest) throws WorkflowLaunchException {
-		// TODO Auto-generated method stub
+		//TODO: launch process with shell, refer container executor in hadoop
 		return null;
 	}
 
