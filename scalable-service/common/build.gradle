@@ -1,0 +1,46 @@
+description = 'Scalable Spring Hadoop Admin Service:Common'
+
+apply plugin: 'eclipse'
+
+repositories {
+	maven { url "http://www.datanucleus.org/downloads/maven2/" }
+}
+
+dependencies {
+	compile "org.springframework.data:spring-data-hadoop:$springHadoopVersion"
+	compile "org.springframework.amqp:spring-amqp:$springAmqpVersion"
+	compile "org.springframework.amqp:spring-rabbit:$springAmqpVersion"	
+	compile "org.springframework.integration:spring-integration-core:$springIntegrationVersion"
+
+	runtime "org.codehaus.jackson:jackson-core-asl:$jacksonVersion"
+	runtime "org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion"
+	runtime "commons-lang:commons-lang:$commonsLangVersion"
+	runtime "org.codehaus.groovy:groovy:$groovyVersion"
+	runtime "hsqldb:hsqldb:$hsqldbVersion"	
+
+	//pig
+	runtime "org.apache.pig:pig:$pigVersion"
+	runtime "jline:jline:$jlineVersion"
+	runtime "org.antlr:antlr:$antlrVersion"
+	
+	//hive
+	runtime "javax.jdo:jdo2-api:$jdoVersion"
+	runtime "org.apache.hive:hive-service:$hiveVersion"
+	runtime "org.apache.hive:hive-metastore:$hiveVersion"
+	runtime "org.apache.hive:hive-jdbc:$hiveVersion"
+	
+	//log
+	runtime "org.slf4j:slf4j-api:$slf4jVersion"
+	runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
+	runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+	
+}
+
+
+eclipse {
+	project {
+		name = "spring-hadoop-admin-service-common"
+	}	
+}
+
+defaultTasks 'clean', 'build'

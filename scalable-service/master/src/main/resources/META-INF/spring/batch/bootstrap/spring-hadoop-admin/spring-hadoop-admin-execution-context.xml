@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="hadoopWorkflowDirectory" class="org.springframework.data.hadoop.admin.workflow.HadoopWorkflowDirectory">
+		<property name="hadoopWorkflowDirectory" value=""/>
+	</bean>
+	
+	<bean id="springHadoopJobLoader" class="org.springframework.batch.core.configuration.support.AutomaticJobRegistrar">
+		<property name="applicationContextFactories">
+			<bean class="org.springframework.data.hadoop.admin.workflow.support.FileSystemApplicationContextsFactoryBean">
+				<property name="workflowArtifacts">
+					<bean class="org.springframework.data.hadoop.admin.workflow.support.FileSystemWorkflowResourceFactoryBean">
+						<property name="baseWorkflowDescriptorDir" value="#{@hadoopWorkflowDirectory.getHadoopWorkflowDirectory()}"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="jobLoader">
+			<bean
+				class="org.springframework.batch.core.configuration.support.DefaultJobLoader">
+				<property name="jobRegistry" ref="jobRegistry" />
+			</bean>
+		</property>
+	</bean>
+
+</beans>

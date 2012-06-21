@@ -3,6 +3,8 @@ rootProject.name = 'spring-hadoop-admin'
 include 'service'
 include 'CLI'
 include 'templates'
-
+include 'scalable-service:common'
+include 'scalable-service:master'
+include 'scalable-service:slave'
 
 
