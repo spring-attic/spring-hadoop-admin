@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     compile "org.springframework.data:spring-data-hadoop:$springHadoopVersion"
+	
 
 	runtime "org.codehaus.jackson:jackson-core-asl:$jacksonVersion"
 	runtime "org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion"
@@ -33,6 +34,7 @@ dependencies {
 	runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
 	runtime "org.slf4j:jcl-over-slf4j:$slf4jVersion"
 	
+	testCompile "com.google.guava:guava:12.0"
 }
 
 war {

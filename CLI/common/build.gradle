@@ -1,0 +1,27 @@
+
+description = 'Spring Hadoop Admin CLI common'
+apply plugin: 'eclipse'
+
+repositories {
+	maven { url "http://spring-roo-repository.springsource.org/release" }
+}
+
+dependencies {
+	compile "org.springframework.shell:spring-shell:$springShellVersion"
+	compile "commons-configuration:commons-configuration:$commonsConfigurationVersion"
+	compile "commons-logging:commons-logging:$commonsLoggingVersion"
+}
+
+jar {
+	baseName "cli-common"
+}
+
+
+eclipse {
+	project {
+		name = "cli-common"
+	}
+}
+
+
+defaultTasks 'clean', 'build'
