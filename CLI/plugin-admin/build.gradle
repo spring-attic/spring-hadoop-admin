@@ -8,8 +8,8 @@ repositories {
 
 dependencies {
 	compile project(':CLI:common')
-	compile project(':CLI:plugin-hdfs')
-	compile project(':CLI:plugin-mapreduce')
+	compile "org.springframework.data.hadoop.impala:plugin-hdfs:$impalaVersion"
+	compile "org.springframework.data.hadoop.impala:plugin-mapreduce:$impalaVersion"
 	compile "org.springframework.shell:spring-shell:$springShellVersion"
 	compile "org.springframework:spring-web:$springVersion"
 }
