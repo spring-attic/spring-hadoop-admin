@@ -16,8 +16,8 @@
 
 	<tasklet id="wordcount-tasklet" job-ref="wc-job"/>
 
-    <beans:bean class="org.springframework.data.hadoop.util.PathUtils" name="pathUtils" p:pathFormat="year/month/day/hour/minute/second" p:rootPath="/user/hadoop/output"/>
-
-    <job id="wc-job" input-path="/user/hadoop/input" jar="${wordcount.jar.path}" mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper" output-path="#{@pathUtils.getTimeBasedPathFromRoot()}" reducer="org.apache.hadoop.examples.WordCount.IntSumReducer" validate-paths="false"/>
+    <job id="wc-job" input-path="/user/hadoop/input" jar="${wordcount.jar.path}"
+     mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper" 
+     output-path="/user/hadoop/output" reducer="org.apache.hadoop.examples.WordCount.IntSumReducer" validate-paths="false"/>
 
 </beans:beans>

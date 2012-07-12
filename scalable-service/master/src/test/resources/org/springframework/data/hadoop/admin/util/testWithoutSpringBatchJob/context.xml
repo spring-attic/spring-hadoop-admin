@@ -19,15 +19,9 @@
 		mapred.job.tracker=${mapred.job.tracker}
 	</configuration>
 	
-	
-
-    <beans:bean name="pathUtils" class="org.springframework.data.hadoop.util.PathUtils" 
-    p:rootPath="/user/hadoop/output"
-    p:pathFormat="year/month/day/hour/minute/second"/>
-
     <job id="wc-job"
               input-path="/user/hadoop/input"
-              output-path="#{@pathUtils.getTimeBasedPathFromRoot()}"
+              output-path="/user/hadoop/output"
               mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper"
               reducer="org.apache.hadoop.examples.WordCount.IntSumReducer"
               validate-paths="false"
