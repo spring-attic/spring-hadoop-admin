@@ -14,7 +14,7 @@
 		</batch:step>
 	</batch:job>
 
-	<tasklet id="wordcount-tasklet" job-ref="wc-job"/>
+	<job-tasklet id="wordcount-tasklet" job-ref="wc-job"/>
 
     <job id="wc-job" input-path="/user/hadoop/input" jar="${wordcount.jar.path}"
      mapper="org.apache.hadoop.examples.WordCount.TokenizerMapper" 
