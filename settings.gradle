@@ -1,11 +1,8 @@
 rootProject.name = 'spring-hadoop-admin'
 
 include 'CLI:common'
-include 'CLI:plugin-hdfs'
-include 'CLI:plugin-mapreduce'
 include 'CLI:plugin-admin'
 include 'templates'
-include 'service'
 include 'scalable-service:common'
 include 'scalable-service:master'
 include 'scalable-service:slave'
