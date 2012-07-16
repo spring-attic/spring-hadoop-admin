@@ -15,7 +15,8 @@
  */
 package org.springframework.data.hadoop.admin.cli.util;
 
-import org.springframework.roo.support.util.Assert;
+import org.springframework.shell.support.util.Assert;
+
 
 /**
  * Utility class to log message to console

@@ -25,12 +25,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.data.hadoop.admin.cli.commands.BaseCommand;
-import org.springframework.data.hadoop.admin.cli.commands.ProjectType;
 import org.springframework.data.hadoop.admin.cli.util.Log;
-import org.springframework.roo.shell.CliCommand;
-import org.springframework.roo.shell.CliOption;
-import org.springframework.roo.shell.CommandMarker;
+import org.springframework.shell.core.CommandMarker;
+import org.springframework.shell.core.annotation.CliCommand;
+import org.springframework.shell.core.annotation.CliOption;
 import org.springframework.stereotype.Component;
 
 /**

@@ -18,8 +18,8 @@ package org.springframework.data.hadoop.admin.cli.commands;
 import org.apache.commons.configuration.ConfigurationException;
 import org.springframework.data.hadoop.admin.cli.util.Log;
 import org.springframework.data.hadoop.admin.cli.util.PropertyUtil;
-import org.springframework.roo.shell.CliCommand;
-import org.springframework.roo.shell.CommandMarker;
+import org.springframework.shell.core.CommandMarker;
+import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.stereotype.Component;
 
 /**

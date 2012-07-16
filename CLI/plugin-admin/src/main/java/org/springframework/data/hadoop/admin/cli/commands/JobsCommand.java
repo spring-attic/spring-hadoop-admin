@@ -16,10 +16,10 @@
 package org.springframework.data.hadoop.admin.cli.commands;
 
 import org.springframework.data.hadoop.admin.cli.commands.BaseCommand;
-import org.springframework.roo.shell.CliAvailabilityIndicator;
-import org.springframework.roo.shell.CliCommand;
-import org.springframework.roo.shell.CliOption;
-import org.springframework.roo.shell.CommandMarker;
+import org.springframework.shell.core.CommandMarker;
+import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
+import org.springframework.shell.core.annotation.CliCommand;
+import org.springframework.shell.core.annotation.CliOption;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
