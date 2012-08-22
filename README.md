@@ -9,9 +9,9 @@ $ git checkout git@github.com:SpringSource/spring-hadoop-admin.git
 
 # build & run service
 
-$ cd service
+$ cd scalable-service/master
 
-$ ../gradlew jettyRun
+$ ../../gradlew jettyRun
 
 # Upload spring hadoop example
 
