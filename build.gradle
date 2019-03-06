@@ -9,10 +9,10 @@ allprojects {
 	repositories {
 		//mavenLocal()
 		mavenCentral()
-		maven { url "http://repo.springsource.org/snapshot" }
-		maven { url "http://repo.springsource.org/release" }
-		maven { url "http://repo.springsource.org/milestone" }
-		maven { url "http://mvnrepository.com/artifact" }
+		maven { url "https://repo.springsource.org/snapshot" }
+		maven { url "https://repo.springsource.org/release" }
+		maven { url "https://repo.springsource.org/milestone" }
+		maven { url "https://mvnrepository.com/artifact" }
 	}
 
 	dependencies {
