@@ -8,7 +8,7 @@ allprojects {
 
 	repositories {
 		//mavenLocal()
-		mavenCentral()
+		maven { url 'https://repo.maven.apache.org/maven2/' }
 		maven { url "http://repo.springsource.org/snapshot" }
 		maven { url "http://repo.springsource.org/release" }
 		maven { url "http://repo.springsource.org/milestone" }
