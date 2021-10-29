@@ -1,5 +1,6 @@
 
 Make sure Spring Hadoop Admin is running:
+
 open new terminal window, and change to "spring-hadoop-admin/scalable-service/master" directory.
 $ ../../gradlew jettyRun
 
