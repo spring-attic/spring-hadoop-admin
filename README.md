@@ -1,3 +1,5 @@
+# spring-hadoop-admin is no longer actively maintained by VMware, Inc.
+
 spring-hadoop-admin
 ===================
 
