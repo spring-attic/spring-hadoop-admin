@@ -8,7 +8,7 @@ apply plugin: 'idea'
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    maven { url 'https://repo.maven.apache.org/maven2/' }
     // Public Spring artefacts
     maven{ 
 		url "http://repo.springsource.org/release"
