@@ -11,13 +11,13 @@ repositories {
     mavenCentral()
     // Public Spring artefacts
     maven{ 
-		url "http://repo.springsource.org/release"
-		url "http://repo.springsource.org/milestone"
-		url "http://repo.springsource.org/snapshot"
-		url "http://oss.sonatype.org/content/repositories/snapshots"
-		url "http://springframework.svn.sourceforge.net/svnroot/springframework/repos/repo-ext/"
+		url "https://repo.springsource.org/release"
+		url "https://repo.springsource.org/milestone"
+		url "https://repo.springsource.org/snapshot"
+		url "https://oss.sonatype.org/content/repositories/snapshots"
+		url "https://springframework.svn.sourceforge.net/svnroot/springframework/repos/repo-ext/"
 		url "http://www.datanucleus.org/downloads/maven2/"
-		url "http://conjars.org/repo"
+		url "https://conjars.org/repo"
     }
 }
 
